@@ -2,31 +2,49 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/happyThoughts";
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/retroApp";
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = Promise;
 
 const port = process.env.PORT || 8080;
 const app = express();
 
-// Thought model using schema to be reusable
-const ThoughtSchema = new mongoose.Schema({
-  message: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 5,
-    maxlength: 140,
-  },
-  hearts: {
-    type: Number,
-    default: 0,
-  },
-  createdAt: {
-    type: Number,
-    default: () => Date.now(),
+// User model using schema to be reusable
+const UserSchema = mongoose.Schema({
+  name: String,
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
   },
 });
+
+const User = mongoose.model("User", UserSchema);
+
+const RoleSchema = mongoose.Schema({
+  description: String,
+});
+
+const Role = mongoose.model("Role", RoleSchema);
+
+// Thoughts using schema to be reusable
+const RetroSchema = mongoose.Schema({
+  description: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userId",
+  },
+});
+
+const Retro = mongoose.model("Retro", RetroSchema);
+
+const ThoughtSchema = mongoose.Schema({
+  description: String,
+  retroId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "retroId",
+  },
+});
+
 const Thought = mongoose.model("Thought", ThoughtSchema);
 
 // Add middlewares to enable cors and json body parsing
@@ -35,27 +53,17 @@ app.use(express.json());
 
 // Start defining your routes here
 app.get("/", (req, res) => {
-  res.send(
-    "Happy Thoughts API. To get all the thoughts, please add /thoughts. Frontend project: https://myhappy-thoughts.netlify.app/"
-  );
+  res.send("Final Project - Backend");
 });
 
-// Get request
-app.get("/thoughts", async (req, res) => {
-  const thoughts = await Thought.find()
-    .sort({ createdAt: "desc" })
-    .limit(20)
-    .exec();
-  res.json(thoughts);
-});
-
+//User POST GET Request
 // Post requests
-app.post("/thoughts", async (req, res) => {
-  const { message } = req.body;
+app.post("/role", async (req, res) => {
+  const { description } = req.body;
 
   try {
-    const newThought = await new Thought({ message }).save();
-    res.status(201).json({ response: newThought, success: true });
+    const newRole = await new Role({ description }).save();
+    res.status(201).json({ response: newRole, success: true });
   } catch (error) {
     res.status(400).json({
       response: error,
@@ -64,26 +72,69 @@ app.post("/thoughts", async (req, res) => {
   }
 });
 
-// Heart likes
-app.post("/thoughts/:thoughtId/like", async (req, res) => {
-  const { thoughtId } = req.params;
+app.post("/user", async (req, res) => {
+  const { name, role } = req.body;
 
   try {
-    const updatedHearts = await Thought.findByIdAndUpdate(
-      thoughtId,
-      {
-        $inc: {
-          hearts: 1,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json({ response: updatedHearts, success: true });
+    const queriedRole = await Role.findById(role);
+    const newUser = await new User({ name, role: queriedRole }).save();
+
+    res.status(201).json({ response: newUser, success: true });
   } catch (error) {
     res.status(400).json({ response: error, success: false });
   }
+});
+
+// Get request
+
+app.get("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const user = await User.findById(userId).populate("role");
+  res.status(200).json({ response: user, success: true });
+});
+
+//Thoughts POST GET Request
+// Post requests
+app.post("/retro", async (req, res) => {
+  const { description, userId } = req.body;
+
+  try {
+    const queriedUserId = await userId.findById(userId);
+    const newRetro = await new Retro({
+      description,
+      userId: queriedUserId,
+    }).save();
+
+    res.status(201).json({ response: newRetro, success: true });
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+
+app.post("/thoughts", async (req, res) => {
+  const { description, retroId } = req.body;
+
+  try {
+    const queriedRetroId = await Retro.findById(retroId);
+    const newThought = await new Thought({
+      description,
+      retroId: queriedRetroId,
+    }).save();
+
+    res.status(201).json({ response: newThought, success: true });
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+
+// Get request
+
+app.get("/thought/:thoughtId", async (req, res) => {
+  const { thoughtId } = req.params;
+
+  const thought = await Thought.findById(thoughtId).populate("retro");
+  res.status(200).json({ response: thought, success: true });
 });
 
 // Start the server

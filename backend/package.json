@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "express-api-starter",
   "version": "1.0.0",
   "description": "Starter project to get up and running with express quickly",
@@ -11,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.16.7",
+    "@babel/helper-compilation-targets": "^7.16.7",
     "@babel/node": "^7.16.7",
     "@babel/preset-env": "^7.16.7",
+    "babel-upgrade": "^1.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "mongoose": "^5.13.14",
