@@ -9,7 +9,7 @@ mongoose.Promise = Promise;
 const port = process.env.PORT || 8080;
 const app = express();
 
-// User model using schema to be reusable
+// User model
 const UserSchema = mongoose.Schema({
   name: String,
   role: {
@@ -20,28 +20,36 @@ const UserSchema = mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
+// Role model
 const RoleSchema = mongoose.Schema({
   description: String,
 });
 
 const Role = mongoose.model("Role", RoleSchema);
 
-// Thoughts using schema to be reusable
+// Retro model - initiate retro + add participants (patch request)
 const RetroSchema = mongoose.Schema({
   description: String,
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "userId",
+    ref: "User",
   },
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const Retro = mongoose.model("Retro", RetroSchema);
 
+// Thought model
 const ThoughtSchema = mongoose.Schema({
   description: String,
-  retroId: {
+  retro: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "retroId",
+    ref: "Retro",
   },
 });
 
@@ -97,13 +105,14 @@ app.get("/user/:userId", async (req, res) => {
 //Thoughts POST GET Request
 // Post requests
 app.post("/retro", async (req, res) => {
-  const { description, userId } = req.body;
+  const { description, user } = req.body;
 
   try {
-    const queriedUserId = await userId.findById(userId);
+    const queriedUser = await User.findById(user);
     const newRetro = await new Retro({
       description,
-      userId: queriedUserId,
+      user: queriedUser,
+      participants: [],
     }).save();
 
     res.status(201).json({ response: newRetro, success: true });
@@ -112,14 +121,35 @@ app.post("/retro", async (req, res) => {
   }
 });
 
-app.post("/thoughts", async (req, res) => {
-  const { description, retroId } = req.body;
+app.patch("/retro/:retroid/participants", async (req, res) => {
+  const { participant } = req.body;
+  const { retroid } = req.params;
 
   try {
-    const queriedRetroId = await Retro.findById(retroId);
+    const queriedParticipant = await User.findById(participant);
+    const updatedRetro = await Retro.findByIdAndUpdate(retroid, {
+      $addToSet: {
+        participants: queriedParticipant,
+      },
+    });
+    if (updatedRetro) {
+      res.status(201).json({ response: updatedRetro, success: true });
+    } else {
+      res.status(404).json({ response: "retro not found", succes: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+
+app.post("/retro/:retro/thoughts", async (req, res) => {
+  const { description, retro } = req.body;
+
+  try {
+    const queriedRetro = await Retro.findById(retro);
     const newThought = await new Thought({
       description,
-      retroId: queriedRetroId,
+      retro: queriedRetro,
     }).save();
 
     res.status(201).json({ response: newThought, success: true });
@@ -130,11 +160,29 @@ app.post("/thoughts", async (req, res) => {
 
 // Get request
 
-app.get("/thought/:thoughtId", async (req, res) => {
+app.get("/thoughts", async (req, res) => {
+  const thought = await Thought.find(req.query);
+  res.status(200).json({ response: thought, success: true });
+});
+
+app.get("/thoughts/:thoughtId", async (req, res) => {
   const { thoughtId } = req.params;
 
   const thought = await Thought.findById(thoughtId).populate("retro");
   res.status(200).json({ response: thought, success: true });
+});
+
+app.get("/retro/:retro/thoughts", async (req, res) => {
+  try {
+    const retroThoughts = await Thought.find({ retro: req.params.retro });
+    if (retroThoughts) {
+      res.json(retroThoughts);
+    } else {
+      res.status(404).json({ error: "No retro found with that id" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid id" });
+  }
 });
 
 // Start the server
