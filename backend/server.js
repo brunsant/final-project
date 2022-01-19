@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/retroApp";
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.Promise = Promise;
 
 const port = process.env.PORT || 8080;
@@ -34,10 +34,10 @@ const RetroSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  participants: [
+  thought: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Thought",
     },
   ],
 });
@@ -51,6 +51,12 @@ const ThoughtSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Retro",
   },
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const Thought = mongoose.model("Thought", ThoughtSchema);
@@ -76,11 +82,10 @@ app.get("/", (req, res) => {
   res.send("Final Project - Backend");
 });
 
-//User POST GET Request
-// Post requests
+// POST  Requests
+// Role
 app.post("/role", async (req, res) => {
   const { description } = req.body;
-
   try {
     const newRole = await new Role({ description }).save();
     res.status(201).json({ response: newRole, success: true });
@@ -91,8 +96,8 @@ app.post("/role", async (req, res) => {
     });
   }
 });
-
-app.post("/user", async (req, res) => {
+// User 
+app.post("/users", async (req, res) => {
   const { name, role } = req.body;
 
   try {
@@ -104,19 +109,8 @@ app.post("/user", async (req, res) => {
     res.status(400).json({ response: error, success: false });
   }
 });
-
-// Get request
-
-app.get("/user/:userId", async (req, res) => {
-  const { userId } = req.params;
-
-  const user = await User.findById(userId).populate("role");
-  res.status(200).json({ response: user, success: true });
-});
-
-//Thoughts POST GET Request
-// Post requests
-app.post("/retro", async (req, res) => {
+// Retros
+app.post("/retros", async (req, res) => {
   const { description, user } = req.body;
 
   try {
@@ -132,29 +126,8 @@ app.post("/retro", async (req, res) => {
     res.status(400).json({ response: error, success: false });
   }
 });
-
-app.patch("/retro/:retroid/participants", async (req, res) => {
-  const { participant } = req.body;
-  const { retroid } = req.params;
-
-  try {
-    const queriedParticipant = await User.findById(participant);
-    const updatedRetro = await Retro.findByIdAndUpdate(retroid, {
-      $addToSet: {
-        participants: queriedParticipant,
-      },
-    });
-    if (updatedRetro) {
-      res.status(201).json({ response: updatedRetro, success: true });
-    } else {
-      res.status(404).json({ response: "retro not found", succes: false });
-    }
-  } catch (error) {
-    res.status(400).json({ response: error, success: false });
-  }
-});
-
-app.post("/retro/:retro/thoughts", async (req, res) => {
+// Thoughts
+app.post("/retros/:retro/thoughts", async (req, res) => {
   const { description, retro } = req.body;
 
   try {
@@ -169,35 +142,8 @@ app.post("/retro/:retro/thoughts", async (req, res) => {
     res.status(400).json({ response: error, success: false });
   }
 });
-
-// Get request
-
-app.get("/thoughts", async (req, res) => {
-  const thought = await Thought.find(req.query);
-  res.status(200).json({ response: thought, success: true });
-});
-
-app.get("/thoughts/:thoughtId", async (req, res) => {
-  const { thoughtId } = req.params;
-
-  const thought = await Thought.findById(thoughtId).populate("retro");
-  res.status(200).json({ response: thought, success: true });
-});
-
-app.get("/retro/:retro/thoughts", async (req, res) => {
-  try {
-    const retroThoughts = await Thought.find({ retro: req.params.retro });
-    if (retroThoughts) {
-      res.json(retroThoughts);
-    } else {
-      res.status(404).json({ error: "No retro found with that id" });
-    }
-  } catch (err) {
-    res.status(400).json({ error: "Invalid id" });
-  }
-});
-
-app.post("/retro/:retro/actionItems", async (req, res) => {
+// Action Items
+app.post("/retros/:retro/actionitems", async (req, res) => {
   const { description, retro } = req.body;
 
   try {
@@ -211,8 +157,164 @@ app.post("/retro/:retro/actionItems", async (req, res) => {
   } catch (error) {
     res.status(400).json({ response: error, success: false });
   }
-});
+}); 
 
+// PATCH Request
+// Participants
+app.patch("/retros/:retro/participants", async (req, res) => {
+  const { participants } = req.body;
+  const { retro } = req.params;
+
+  try {
+    const queriedParticipants = await User.findById(participants);
+    const updatedRetro = await Retro.findByIdAndUpdate(retro, {
+      $addToSet: {
+        participants: queriedParticipants,
+      },
+    });
+    if (updatedRetro) {
+      res.status(201).json({ response: updatedRetro, success: true });
+    } else {
+      res.status(404).json({ response: "retro not found", succes: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+// Thoughts
+app.patch("/retros/:thoughtId", async (req, res) => {
+  const { thoughtId } = req.params;
+
+  try {
+    const updatedThought = await Thought.findOneAndUpdate({ _id: thoughtId }, req.body);
+    if (updatedThought) {
+      res.status(201).json({ response: updatedThought, success: true });
+    } else {
+      res.status(404).json({ response: "Thought not found", succes: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+// Action
+app.patch("/retros/actionitems/:actionId", async (req, res) => {
+  const { actionId } = req.params;
+
+  try {
+    const updatedAction = await ActionItem.findOneAndUpdate({ _id: actionId }, req.body);
+    if (updatedAction) {
+      res.status(201).json({ response: updatedAction, success: true });
+    } else {
+      res.status(404).json({ response: "Action Item not found", succes: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+// DELETE Request
+// Retro
+app.delete("/retros/:retroId", async (req,res) => {
+  const {retroId} =req.params;
+  try {
+		const deletedRetro = await Retro.findOneAndDelete({ _id: retroId });
+		if (deletedRetro) {
+			res.status(200).json({ response: deletedRetro, success: true });
+		} else {
+			res.status(404).json({ response: "Retro not found", success: false });
+		}
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+})
+// Thought
+app.delete("/thoughts/:thoughtId", async (req,res) => {
+  const {thoughtId} =req.params;
+  try {
+		const deletedThought = await Thought.findOneAndDelete({ _id: thoughtId });
+		if (deletedThought) {
+			res.status(200).json({ response: deletedThought, success: true });
+		} else {
+			res.status(404).json({ response: "Thought not found", success: false });
+		}
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+})
+// Action
+app.delete("/actionitems/:actionitemsId", async (req,res) => {
+  const {actionitemsId} =req.params;
+  try {
+		const deletedActionItem = await ActionItem.findOneAndDelete({ _id: actionitemsId });
+		if (deletedActionItem) {
+			res.status(200).json({ response: deletedActionItem, success: true });
+		} else {
+			res.status(404).json({ response: "action item not found", success: false });
+		}
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+})
+
+
+
+// GET Request
+// User
+app.get("/users/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const user = await User.findById(userId).populate("role");
+  res.status(200).json({ response: user, success: true });
+});
+// Thoughts
+app.get("/thoughts", async (req, res) => {
+  const thought = await Thought.find(req.query);
+  res.status(200).json({ response: thought, success: true });
+});
+// Thoughts by ID
+app.get("/thoughts/:thoughtId", async (req, res) => {
+  const { thoughtId } = req.params;
+
+  const thought = await Thought.findById(thoughtId).populate("retro");
+  res.status(200).json({ response: thought, success: true });
+});
+// Thoughts by Retro
+app.get("/retros/:retro/thoughts", async (req, res) => {
+  try {
+    const retroThoughts = await Thought.find({ retro: req.params.retro });
+    if (retroThoughts) {
+      res.json(retroThoughts);
+    } else {
+      res.status(404).json({ error: "No retro found with that id" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid id" });
+  }
+});
+// Actions
+app.get("/actionitems", async (req, res) => {
+  const action = await ActionItem.find(req.query);
+  res.status(200).json({ response: action, success: true });
+});
+// Actions by ID
+app.get("/actionitems/:actionId", async (req, res) => {
+  const { actionId } = req.params;
+
+  const action = await ActionItem.findById(actionId).populate("retro");
+  res.status(200).json({ response: action, success: true });
+});
+// Actions by Retro
+app.get("/retros/:retro/actionitems", async (req, res) => {
+  try {
+    const retroActions = await ActionItem.find({ retro: req.params.retro });
+    if (retroActions) {
+      res.json(retroActions);
+    } else {
+      res.status(404).json({ error: "No retro found with that id" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid id" });
+  }
+});
 
 
 // Start the server
