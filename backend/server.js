@@ -55,6 +55,18 @@ const ThoughtSchema = mongoose.Schema({
 
 const Thought = mongoose.model("Thought", ThoughtSchema);
 
+
+const ActionSchema = mongoose.Schema({
+  description: String,
+
+  retro: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Retro",
+  }
+})
+
+const ActionItem = mongoose.model("ActionItem", ActionSchema);
+
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());
@@ -184,6 +196,24 @@ app.get("/retro/:retro/thoughts", async (req, res) => {
     res.status(400).json({ error: "Invalid id" });
   }
 });
+
+app.post("/retro/:retro/actionItems", async (req, res) => {
+  const { description, retro } = req.body;
+
+  try {
+    const queriedRetro = await Retro.findById(retro);
+    const newActionItem = await new ActionItem({
+      description,
+      retro: queriedRetro,
+    }).save();
+
+    res.status(201).json({ response: newActionItem, success: true });
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
+
+
 
 // Start the server
 app.listen(port, () => {
