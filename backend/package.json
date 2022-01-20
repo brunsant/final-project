@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.16.7",
+    "@babel/core": "^7.16.10",
     "@babel/helper-compilation-targets": "^7.16.7",
     "@babel/node": "^7.16.7",
-    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-env": "^7.16.10",
     "babel-upgrade": "^1.0.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
