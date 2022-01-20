@@ -5,7 +5,12 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/retroApp";
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true, });
+mongoose.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+});
 mongoose.Promise = Promise;
 
 const port = process.env.PORT || 8080;
@@ -64,11 +69,10 @@ const ThoughtSchema = mongoose.Schema({
   retro: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Retro",
-  }
+  },
 });
 
 const Thought = mongoose.model("Thought", ThoughtSchema);
-
 
 const ActionSchema = mongoose.Schema({
   description: String,
@@ -76,8 +80,8 @@ const ActionSchema = mongoose.Schema({
   retro: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Retro",
-  }
-})
+  },
+});
 
 const ActionItem = mongoose.model("ActionItem", ActionSchema);
 
@@ -85,26 +89,25 @@ const ActionItem = mongoose.model("ActionItem", ActionSchema);
 app.use(cors());
 app.use(express.json());
 
-
 const authenticateUser = async (req, res, next) => {
-  const accessToken = req.header("Authorization")
+  const accessToken = req.header("Authorization");
 
   try {
-    const user = await User.findOne({ accessToken })
+    const user = await User.findOne({ accessToken });
     if (user) {
-      next()
+      next();
     } else {
       res.status(401).json({
         response: {
           message: "Please, log in",
         },
         success: false,
-      })
+      });
     }
   } catch (error) {
-    res.status(400).json({ response: error, success: false })
+    res.status(400).json({ response: error, success: false });
   }
-}
+};
 
 // Start defining your routes here
 app.get("/", (req, res) => {
@@ -125,25 +128,31 @@ app.post("/role", async (req, res) => {
     });
   }
 });
-// User 
+// User
 app.post("/signup", async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
-    const salt = bcrypt.genSaltSync()
+    const salt = bcrypt.genSaltSync();
     const queriedRole = await Role.findById(role);
-    const newUser = await new User({ username, password: bcrypt.hashSync(password, salt), role: queriedRole }).save();
+    const newUser = await new User({
+      username,
+      password: bcrypt.hashSync(password, salt),
+      role: queriedRole,
+    }).save();
 
     if (password.length < 5) {
-      throw { message: "Password must be at least 5 characters long" }
+      throw { message: "Password must be at least 5 characters long" };
     }
 
-
-    res.status(201).json({ response: {
-      userId: newUser._id,
-      username: newUser.username,
-      accessToken: newUser.accessToken,
-    },   success: true, });
+    res.status(201).json({
+      response: {
+        userId: newUser._id,
+        username: newUser.username,
+        accessToken: newUser.accessToken,
+      },
+      success: true,
+    });
   } catch (error) {
     res.status(400).json({ response: error, success: false });
   }
@@ -223,7 +232,7 @@ app.post("/retros/:retro/actionitems", async (req, res) => {
   } catch (error) {
     res.status(400).json({ response: error, success: false });
   }
-}); 
+});
 
 // PATCH Request
 // Participants
@@ -248,11 +257,14 @@ app.patch("/retros/:retro/participants", async (req, res) => {
   }
 });
 // Thoughts
-app.patch("/retros/:thoughtId", async (req, res) => {
+app.patch("/retros/thoughts/:thoughtId", async (req, res) => {
   const { thoughtId } = req.params;
 
   try {
-    const updatedThought = await Thought.findOneAndUpdate({ _id: thoughtId }, req.body);
+    const updatedThought = await Thought.findOneAndUpdate(
+      { _id: thoughtId },
+      req.body
+    );
     if (updatedThought) {
       res.status(201).json({ response: updatedThought, success: true });
     } else {
@@ -267,11 +279,16 @@ app.patch("/retros/actionitems/:actionId", async (req, res) => {
   const { actionId } = req.params;
 
   try {
-    const updatedAction = await ActionItem.findOneAndUpdate({ _id: actionId }, req.body);
+    const updatedAction = await ActionItem.findOneAndUpdate(
+      { _id: actionId },
+      req.body
+    );
     if (updatedAction) {
       res.status(201).json({ response: updatedAction, success: true });
     } else {
-      res.status(404).json({ response: "Action Item not found", succes: false });
+      res
+        .status(404)
+        .json({ response: "Action Item not found", succes: false });
     }
   } catch (error) {
     res.status(400).json({ response: error, success: false });
@@ -279,67 +296,94 @@ app.patch("/retros/actionitems/:actionId", async (req, res) => {
 });
 // DELETE Request
 // Retro
-app.delete("/retros/:retroId", async (req,res) => {
-  const {retroId} =req.params;
+app.delete("/retros/:retroId", async (req, res) => {
+  const { retroId } = req.params;
   try {
-		const deletedRetro = await Retro.findOneAndDelete({ _id: retroId });
-		if (deletedRetro) {
-			res.status(200).json({ response: deletedRetro, success: true });
-		} else {
-			res.status(404).json({ response: "Retro not found", success: false });
-		}
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-})
+    const deletedRetro = await Retro.findOneAndDelete({ _id: retroId });
+    if (deletedRetro) {
+      res.status(200).json({ response: deletedRetro, success: true });
+    } else {
+      res.status(404).json({ response: "Retro not found", success: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
 // Thought
-app.delete("/thoughts/:thoughtId", async (req,res) => {
-  const {thoughtId} =req.params;
+app.delete("/thoughts/:thoughtId", async (req, res) => {
+  const { thoughtId } = req.params;
   try {
-		const deletedThought = await Thought.findOneAndDelete({ _id: thoughtId });
-		if (deletedThought) {
-			res.status(200).json({ response: deletedThought, success: true });
-		} else {
-			res.status(404).json({ response: "Thought not found", success: false });
-		}
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-})
+    const deletedThought = await Thought.findOneAndDelete({ _id: thoughtId });
+    if (deletedThought) {
+      res.status(200).json({ response: deletedThought, success: true });
+    } else {
+      res.status(404).json({ response: "no thought found", success: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
 // Action
-app.delete("/actionitems/:actionitemsId", async (req,res) => {
-  const {actionitemsId} =req.params;
+app.delete("/actionitems/:actionitemsId", async (req, res) => {
+  const { actionitemsId } = req.params;
   try {
-		const deletedActionItem = await ActionItem.findOneAndDelete({ _id: actionitemsId });
-		if (deletedActionItem) {
-			res.status(200).json({ response: deletedActionItem, success: true });
-		} else {
-			res.status(404).json({ response: "action item not found", success: false });
-		}
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-})
+    const deletedActionItem = await ActionItem.findOneAndDelete({
+      _id: actionitemsId,
+    });
+    if (deletedActionItem) {
+      res.status(200).json({ response: deletedActionItem, success: true });
+    } else {
+      res
+        .status(404)
+        .json({ response: "No action item found", success: false });
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false });
+  }
+});
 
 // GET Request
 // User
-app.get("/users/:userId", authenticateUser, async (req, res) => {
+app.get("/users/:userId", authenticateUser);
+app.get("/users/:userId", async (req, res) => {
   const { userId } = req.params;
-
-  const user = await User.findById(userId).populate("role");
-  res.status(200).json({ response: user, success: true });
+  try {
+    const user = await User.findById(userId).populate("role");
+    if (user) {
+      res.status(200).json({ response: user, success: true });
+    } else {
+      res.status(404).json({ error: "No user found" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid user id" });
+  }
 });
 // Thoughts
 app.get("/thoughts", async (req, res) => {
-  const thought = await Thought.find(req.query);
-  res.status(200).json({ response: thought, success: true });
+  try {
+    const thought = await Thought.find(req.query);
+    if (thought) {
+      res.status(200).json({ response: thought, success: true });
+    } else {
+      res.status(404).json({ error: "No thoughts found" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid id" });
+  }
 });
 // Thoughts by ID
 app.get("/thoughts/:thoughtId", async (req, res) => {
   const { thoughtId } = req.params;
-
-  const thought = await Thought.findById(thoughtId).populate("retro");
-  res.status(200).json({ response: thought, success: true });
+  try {
+    const thought = await Thought.findById(thoughtId).populate("retro");
+    if (thought) {
+      res.status(200).json({ response: thought, success: true });
+    } else {
+      res.status(404).json({ error: "No thought found with that id" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid thought id" });
+  }
 });
 // Thoughts by Retro
 app.get("/retros/:retro/thoughts", async (req, res) => {
@@ -348,7 +392,7 @@ app.get("/retros/:retro/thoughts", async (req, res) => {
     if (retroThoughts) {
       res.json(retroThoughts);
     } else {
-      res.status(404).json({ error: "No retro found with that id" });
+      res.status(404).json({ error: "No thoughts found" });
     }
   } catch (err) {
     res.status(400).json({ error: "Invalid id" });
@@ -356,15 +400,30 @@ app.get("/retros/:retro/thoughts", async (req, res) => {
 });
 // Actions
 app.get("/actionitems", async (req, res) => {
-  const action = await ActionItem.find(req.query);
-  res.status(200).json({ response: action, success: true });
+  try {
+    const action = await ActionItem.find(req.query);
+    if (action) {
+      res.status(200).json({ response: action, success: true });
+    } else {
+      res.status(404).json({ error: "No action items found " });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid action item" });
+  }
 });
 // Actions by ID
 app.get("/actionitems/:actionId", async (req, res) => {
   const { actionId } = req.params;
-
-  const action = await ActionItem.findById(actionId).populate("retro");
-  res.status(200).json({ response: action, success: true });
+  try {
+    const action = await ActionItem.findById(actionId).populate("retro");
+    if (action) {
+      res.status(200).json({ response: action, success: true });
+    } else {
+      res.status(404).json({ error: "No action items found with that id" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid action item id" });
+  }
 });
 // Actions by Retro
 app.get("/retros/:retro/actionitems", async (req, res) => {
@@ -373,13 +432,12 @@ app.get("/retros/:retro/actionitems", async (req, res) => {
     if (retroActions) {
       res.json(retroActions);
     } else {
-      res.status(404).json({ error: "No retro found with that id" });
+      res.status(404).json({ error: "No action items found" });
     }
   } catch (err) {
-    res.status(400).json({ error: "Invalid id" });
+    res.status(400).json({ error: "Invalid retro id" });
   }
 });
-
 
 // Start the server
 app.listen(port, () => {
