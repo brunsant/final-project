@@ -1,21 +1,23 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import React from "react"
+import { Provider } from "react-redux"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { configureStore, combineReducers } from "@reduxjs/toolkit"
 
-import Main from "./components/Main";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
-import NotFound from "./components/NotFound";
-import ProfilePage from "./components/ProfilePage";
+import Main from "./components/Main"
+import Signin from "./components/Signin"
+import Signup from "./components/Signup"
+import NotFound from "./components/NotFound"
+import ProfilePage from "./components/ProfilePage"
 
-import user from "./reducers/user";
+import user from "./reducers/user"
+import retro from "./reducers/retro"
 
 const reducer = combineReducers({
   user: user.reducer,
-});
+  retro: retro.reducer,
+})
 
-const store = configureStore({ reducer });
+const store = configureStore({ reducer })
 
 function App() {
   return (
@@ -24,13 +26,13 @@ function App() {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/profilePage" element={<ProfilePage />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/profilepage" element={<ProfilePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App

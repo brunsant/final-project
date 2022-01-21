@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch, batch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import user from "../reducers/user"
 import { API_URL } from "../utils/constants"
 
@@ -54,6 +54,7 @@ const Signup = () => {
             dispatch(user.actions.setRole(null))
             dispatch(user.actions.setError(data.response))
           })
+          setError("Sorry, this is an invalid username or password")
         }
       })
   }
@@ -90,13 +91,11 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit" onClick={() => setMode("signin")}>
-          LOGIN
-        </Button>
         <Button type="submit" onClick={() => setMode("signup")}>
           SIGNUP
         </Button>
         <Error> {error}</Error>
+        <Link to="/signin"> Sign in instead </Link>
       </Form>
     </Container>
   )
