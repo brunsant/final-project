@@ -1,69 +1,90 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, batch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch, batch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { API_URL } from "../utils/constants"
-import user from "../reducers/user"
-import retro from "../reducers/retro"
+import { API_URL } from "../utils/constants";
+import user from "../reducers/user";
+import retro from "../reducers/retro";
 
-const Main = () => {
-  const thoughtsItems = useSelector((store) => store.retro.items)
-  const accessToken = useSelector((store) => store.user.accessToken)
+export const Main = () => {
+  const [description, setDescription] = useState("");
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const accessToken = useSelector((store) => store.user.accessToken);
+  const userId = useSelector((store) => store.user.userId);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logOutUser = () => {
     batch(() => {
-      dispatch(user.actions.setUsername(null))
-      dispatch(user.actions.setAccessToken(null))
+      dispatch(user.actions.setUsername(null));
+      dispatch(user.actions.setAccessToken(null));
 
-      localStorage.removeItem("user")
-    })
-  }
+      localStorage.removeItem("user");
+    });
+  };
 
   useEffect(() => {
     if (!accessToken) {
-      navigate("/signin")
+      navigate("/signin");
     }
-  }, [accessToken, navigate])
+  }, [accessToken, navigate]);
 
-  useEffect(() => {
+  const onFormSubmit = (event) => {
+    event.preventDefault();
     const options = {
-      method: "GET",
+      method: "POST",
       headers: {
-        Authorization: accessToken,
+        "Content-Type": "application/json",
       },
-    }
+      body: JSON.stringify({ description, username: userId }),
+    };
 
-    fetch(API_URL("retro"), options)
+    fetch(API_URL("retros"), options)
       .then((res) => res.json())
       .then((data) => {
+        console.log("RETRO DATA", data);
         if (data.success) {
-          dispatch(retro.actions.setItems(data.response))
-          dispatch(retro.actions.setError(null))
+          batch(() => {
+            dispatch(retro.actions.setDescription(data.response.description));
+            dispatch(retro.actions.setUsername(data.response.username));
+
+            dispatch(retro.actions.setError(null));
+          });
         } else {
-          dispatch(retro.actions.setItems([]))
-          dispatch(retro.actions.setError(data.response))
+          batch(() => {
+            dispatch(retro.actions.setDescription(null));
+            dispatch(retro.actions.setError(data.response));
+          });
         }
-      })
-  }, [accessToken, dispatch])
+        console.log("test", data);
+      });
+  };
 
   return (
     <>
       <div>
-        <h1>welcome to the chamber of secrets..</h1>
-        {thoughtsItems.map((item) => (
-          <div key={item._id}>{item.message}</div>
-        ))}
-      </div>
-      <div className="logout-btn-wrapper">
-        <button className="logout-btn" onClick={logOutUser}>
-          Log out
-        </button>
+        <h1>Welcome to the sprint retro app..</h1>
+        <div className="logout-btn-wrapper">
+          <button className="logout-btn" onClick={logOutUser}>
+            Log out
+          </button>
+        </div>
+
+        <div>
+          <form onSubmit={onFormSubmit}>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Retro info"
+            ></input>
+            <button type="submit"> Add retro</button>
+          </form>
+        </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

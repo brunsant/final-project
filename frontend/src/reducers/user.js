@@ -6,7 +6,7 @@ const user = createSlice({
     userId: null,
     username: null,
     accessToken: null,
-    role: null,
+    // role: null,
     error: null,
   },
   reducers: {
@@ -19,9 +19,9 @@ const user = createSlice({
     setAccessToken: (store, action) => {
       store.accessToken = action.payload;
     },
-    setRole: (store, action) => {
-      store.role = action.payload;
-    },
+    // setRole: (store, action) => {
+    //   store.role = action.payload;
+    // },
     setError: (store, action) => {
       store.error = action.payload;
     },

@@ -1,34 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const retro = createSlice({
   name: "retro",
   initialState: {
-    items: [
-      {
-        id: 1,
-        message: "Be yourself, everyone else is already taken - Oscar Wilde ",
-      },
-      {
-        id: 2,
-        message: "There is nothing permanent except change - Heraclitus ",
-      },
-      { id: 3, message: "Every moment is a fresh beginning - T.S. Elliot" },
-      {
-        id: 4,
-        message:
-          "Attitude is a little thing that makes a big difference - Winston Churchill",
-      },
-    ],
+    description: null,
+    username: null,
+    participants: [],
     error: null,
   },
   reducers: {
-    setItems: (store, action) => {
-      store.items = action.payload
+    setDescription: (store, action) => {
+      store.description = action.payload;
+    },
+    setUsername: (store, action) => {
+      store.username = action.payload;
     },
     setError: (store, action) => {
-      store.error = action.payload
+      store.error = action.payload;
     },
   },
-})
+});
 
-export default retro
+export default retro;
