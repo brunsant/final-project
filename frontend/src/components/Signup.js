@@ -1,63 +1,62 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch, batch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import user from "../reducers/user";
-import { API_URL } from "../utils/constants";
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch, batch } from "react-redux"
+import { useNavigate, Link } from "react-router-dom"
+import user from "../reducers/user"
+import { API_URL } from "../utils/constants"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 const Signup = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-  const [mode, setMode] = useState("signup");
-  const [error, setError] = useState("");
-  const accessToken = useSelector((store) => store.user.accessToken);
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [mode, setMode] = useState("signup")
+  const [error, setError] = useState("")
+  const accessToken = useSelector((store) => store.user.accessToken)
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (accessToken) {
-      navigate("/");
+      navigate("/")
     }
-  }, [accessToken, navigate]);
+  }, [accessToken, navigate])
 
   const onFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password, role }),
-    };
+      body: JSON.stringify({ username, password }),
+    }
 
     fetch(API_URL(mode), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log("USER DATA", data);
+        console.log("USER DATA", data)
         if (data.success) {
           batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId));
-            dispatch(user.actions.setUsername(data.response.username));
-            dispatch(user.actions.setAccessToken(data.response.accessToken));
+            dispatch(user.actions.setUserId(data.response.userId))
+            dispatch(user.actions.setUsername(data.response.username))
+            dispatch(user.actions.setAccessToken(data.response.accessToken))
             // dispatch(user.actions.setRole(data.response.role));
-            dispatch(user.actions.setError(null));
-          });
+            dispatch(user.actions.setError(null))
+          })
         } else {
           batch(() => {
-            dispatch(user.actions.setUserId(null));
-            dispatch(user.actions.setUsername(null));
-            dispatch(user.actions.setAccessToken(null));
-            dispatch(user.actions.setRole(null));
-            dispatch(user.actions.setError(data.response));
-          });
-          setError("Sorry, this is an invalid username or password");
+            dispatch(user.actions.setUserId(null))
+            dispatch(user.actions.setUsername(null))
+            dispatch(user.actions.setAccessToken(null))
+            dispatch(user.actions.setRole(null))
+            dispatch(user.actions.setError(data.response))
+          })
+          setError("Sorry, this is an invalid username or password")
         }
-      });
-  };
+      })
+  }
 
   return (
     <Container>
@@ -71,18 +70,7 @@ const Signup = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <select
-          id="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          required
-        >
-          <option disabled value="">
-            Select a role
-          </option>
-          <option value="Admin">Admin</option>
-          <option value="Participant">Participant</option>
-        </select>
+
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
@@ -95,19 +83,19 @@ const Signup = () => {
           SIGNUP
         </Button>
         <Error> {error}</Error>
-        <Link to="/signin"> Sign in instead </Link>
+        <Link to="/signin"> Go to sign in </Link>
       </Form>
     </Container>
-  );
-};
+  )
+}
 
-export default Signup;
+export default Signup
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 10%;
-`;
+`
 
 const Title = styled.h1`
   font-size: 30px;
@@ -119,7 +107,7 @@ const Title = styled.h1`
   @media (min-width: 1025px) {
     font-size: 30px;
   }
-`;
+`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -136,7 +124,7 @@ const Form = styled.form`
     width: 20%;
     padding: 30px 25px;
   }
-`;
+`
 const Label = styled.label`
   font-size: 18px;
   @media (min-width: 768px) {
@@ -145,7 +133,7 @@ const Label = styled.label`
   @media (min-width: 1025px) {
     font-size: 18px;
   }
-`;
+`
 const Button = styled.button`
   padding: 10px;
   margin: 20px;
@@ -156,12 +144,12 @@ const Button = styled.button`
   box-shadow: 0px 8px 15px rgba(100, 80, 18, 0.6);
   transition: all 0.3s ease 0s;
   cursor: pointer;
-`;
+`
 const Input = styled.input`
   padding: 5px;
   border-radius: 5px;
-`;
+`
 const Error = styled.p`
   font-size: 18px;
   text-align: center;
-`;
+`

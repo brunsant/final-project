@@ -80,7 +80,7 @@ const Signin = () => {
           Sign in
         </Button>
         <Error> {error}</Error>
-        <Link to="/signup"> Sign up instead </Link>
+        <Link to="/signup">Go to Sign up</Link>
       </Form>
     </Container>
   )

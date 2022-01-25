@@ -138,7 +138,7 @@ app.post("/signup", async (req, res) => {
     const salt = bcrypt.genSaltSync()
     // const queriedRole = await Role.findById(role)
     const newUser = await new User({
-      username,
+      username: username.toLowerCase(),
       password: bcrypt.hashSync(password, salt),
       role,
     }).save()
@@ -165,7 +165,7 @@ app.post("/signin", async (req, res) => {
   const { username, password } = req.body
 
   try {
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ username: username.toLowerCase() })
 
     if (user && bcrypt.compareSync(password, user.password)) {
       res.status(200).json({
@@ -194,6 +194,7 @@ app.post("/retros", async (req, res) => {
   try {
     const queriedAdmin = await User.findById(admin)
     const queriedParticipants = await User.findById(participants)
+
     const newRetro = await new Retro({
       description,
       admin: queriedAdmin,
