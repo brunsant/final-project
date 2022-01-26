@@ -377,6 +377,19 @@ app.get("/users/:userId", async (req, res) => {
     res.status(400).json({ error: "Invalid user id" });
   }
 });
+// Users
+app.get("/users", async (req, res) => {
+  try {
+    const user = await User.find(req.query);
+    if (user) {
+      res.status(200).json({ response: user, success: true });
+    } else {
+      res.status(404).json({ error: "No retro found" });
+    }
+  } catch (err) {
+    res.status(400).json({ error: "Invalid id" });
+  }
+});
 // Retros
 app.get("/retros", async (req, res) => {
   try {

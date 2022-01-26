@@ -1,13 +1,47 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Styles for the input */
+.ReactTags__tagInput {
+  border-radius: 2px;
+  display: inline-block;
+}
+.ReactTags__tagInput input.ReactTags__tagInputField,
+.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 31px;
+  font-size: 18px;
+  border: 1px solid gray;
+  min-width: 300px;
+}
+
+/* Styles for selected tags */
+.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid gray;
+  font-size: 18px;
+  display: inline-block;
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 2px;
+}
+.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  cursor: pointer;
+}
+
+.ReactTags__remove {
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: gray;
 }
