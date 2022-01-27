@@ -7,6 +7,7 @@ const retro = createSlice({
     admin: null,
     participants: [],
     error: null,
+    active: false,
   },
   reducers: {
     setDescription: (store, action) => {
@@ -21,6 +22,24 @@ const retro = createSlice({
     setError: (store, action) => {
       store.error = action.payload
     },
+    setActive: (store, action) => {
+      store.active = action.payload
+    },
+    // toggleActive: (store, action) => {
+    //   const updatedRetro = store.items.map((item) => {
+    //     if (item.id === action.payload) {
+    //       const updatedTodo = {
+    //         ...item,
+    //         isComplete: !item.isComplete,
+    //       }
+    //       return updatedTodo
+    //     } else {
+    //       return item
+    //     }
+    //   })
+
+    //   store.items = updatedItems
+    // },
   },
 })
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch, batch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import Header from "./Header"
 
 import { API_URL } from "../utils/constants"
-import user from "../reducers/user"
+// import user from "../reducers/user"
 import retro from "../reducers/retro"
 import { WithContext as ReactTags } from "react-tag-input"
 import styled from "styled-components"
@@ -13,27 +13,11 @@ export const Main = () => {
   const [participants, setParticipants] = useState([])
   const [userList, setUserList] = useState("")
 
-  const accessToken = useSelector((store) => store.user.accessToken)
+  // const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
   // const userName = useSelector((store) => store.user.username)
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const logOutUser = () => {
-    batch(() => {
-      dispatch(user.actions.setUsername(null))
-      dispatch(user.actions.setAccessToken(null))
-
-      localStorage.removeItem("user")
-    })
-  }
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigate("/signin")
-    }
-  }, [accessToken, navigate])
 
   const onFormSubmit = (event) => {
     event.preventDefault()
@@ -52,7 +36,7 @@ export const Main = () => {
     fetch(API_URL("retros"), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log("RETRO DATA", data)
+        // console.log("RETRO DATA", data)
         if (data.success) {
           batch(() => {
             dispatch(retro.actions.setDescription(data.response.description))
@@ -77,7 +61,7 @@ export const Main = () => {
       .then((data) => setUserList(data.response))
   }, [])
 
-  console.log("USERS", userList)
+  // console.log("USERS", userList)
 
   // const suggestions = participants.map((item) => {
   //   return {
@@ -108,7 +92,7 @@ export const Main = () => {
 
   const handleAddition = (tag) => {
     const userBanana = userList.find((user) => user.username === tag.text)
-    console.log(" BANANA", userBanana, tag)
+    // console.log(" BANANA", userBanana, tag)
     if (userBanana) {
       setParticipants([...participants, tag])
     } else {
@@ -131,11 +115,10 @@ export const Main = () => {
   }
   return (
     <>
+      <Header />
       <Container>
-        <Button onClick={logOutUser}>Log out</Button>
-        <Title>Welcome to the sprint retro app..</Title>
-
         <div>
+          <h1> Create your retro here! </h1>
           <Form onSubmit={onFormSubmit}>
             <Input
               type="text"
@@ -193,20 +176,6 @@ const Form = styled.form`
     padding: 30px 25px;
   }
 `
-
-const Title = styled.h1`
-  font-size: 30px;
-  margin: 0px;
-  padding: 20px 0;
-  text-align: center;
-
-  @media (min-width: 768px) {
-    font-size: 45px;
-  }
-  @media (min-width: 1025px) {
-    font-size: 30px;
-  }
-`
 const ParticipantContainer = styled.div`
   margin: 20px;
 `
@@ -214,18 +183,6 @@ const Input = styled.input`
   padding: 20px;
   border-radius: 5px;
   margin-left: 17px;
-`
-
-const Button = styled.button`
-  width: 100px;
-  padding: 15px;
-  margin: 20px;
-  border-radius: 15px;
-  border: none;
-  background-color: white;
-  box-shadow: 0px 8px 15px gray;
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
 `
 
 const SubmitButton = styled.button`

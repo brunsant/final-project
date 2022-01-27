@@ -413,14 +413,14 @@ app.get("/retros/:retroId", async (req, res) => {
     res.status(400).json({ error: "Invalid retro id" })
   }
 })
-//  Retro by User - NEED FIXING
+//  Retro by User
 app.get("/users/:userId/retros", async (req, res) => {
-  const { userId } = req.params
-
   try {
-    const queriedUser = await User.findById(userId).populate("retros")
-    if (queriedUser) {
-      res.status(200).json({ response: queriedUser.retros, success: true })
+    const queriedRetro = await Retro.find({
+      $or: [{ participants: req.params.userId }, { admin: req.params.userId }],
+    })
+    if (queriedRetro) {
+      res.status(200).json({ response: queriedRetro, success: true })
     } else {
       res.status(404).json({ error: "No retro found for that user" })
     }

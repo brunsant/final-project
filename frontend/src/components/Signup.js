@@ -36,7 +36,6 @@ const Signup = () => {
     fetch(API_URL(mode), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log("USER DATA", data)
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setUserId(data.response.userId))
