@@ -12,7 +12,7 @@ export const Main = () => {
 
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
-  const userName = useSelector((store) => store.user.username)
+  // const userName = useSelector((store) => store.user.username)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
