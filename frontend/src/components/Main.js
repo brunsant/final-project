@@ -11,10 +11,11 @@ import styled from "styled-components"
 export const Main = () => {
   const [description, setDescription] = useState("")
   const [participants, setParticipants] = useState([])
+  const [userList, setUserList] = useState("")
 
   const accessToken = useSelector((store) => store.user.accessToken)
   const userId = useSelector((store) => store.user.userId)
-  const userName = useSelector((store) => store.user.username)
+  // const userName = useSelector((store) => store.user.username)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -70,6 +71,14 @@ export const Main = () => {
       })
   }
 
+  useEffect(() => {
+    fetch(API_URL("users"))
+      .then((res) => res.json())
+      .then((data) => setUserList(data.response))
+  }, [])
+
+  console.log("USERS", userList)
+
   // const suggestions = participants.map((item) => {
   //   return {
   //     id: userName,
@@ -88,8 +97,23 @@ export const Main = () => {
     setParticipants(participants.filter((tag, index) => index !== i))
   }
 
+  // const handleAddition = (tag) => {
+  //   userList.map((user) => user.response.username)
+  //   if (participants === user) {
+  //     setParticipants([...participants, tag])
+  //   } else {
+  //     return "User not found"
+  //   }
+  // }
+
   const handleAddition = (tag) => {
-    setParticipants([...participants, tag])
+    const userBanana = userList.find((user) => user.username === tag.text)
+    console.log(" BANANA", userBanana, tag)
+    if (userBanana) {
+      setParticipants([...participants, tag])
+    } else {
+      alert("Invalid username")
+    }
   }
 
   const handleDrag = (tag, currPos, newPos) => {
