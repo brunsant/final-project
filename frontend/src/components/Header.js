@@ -1,30 +1,30 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, batch } from "react-redux"
-import { useNavigate, Link } from "react-router-dom"
+import React, { useEffect } from "react";
+import { useSelector, useDispatch, batch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 
-import user from "../reducers/user"
+import user from "../reducers/user";
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 const Header = () => {
-  const accessToken = useSelector((store) => store.user.accessToken)
+  const accessToken = useSelector((store) => store.user.accessToken);
   //   const userId = useSelector((store) => store.user.userId)
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logOutUser = () => {
     batch(() => {
-      dispatch(user.actions.setUsername(null))
-      dispatch(user.actions.setAccessToken(null))
+      dispatch(user.actions.setUsername(null));
+      dispatch(user.actions.setAccessToken(null));
 
-      localStorage.removeItem("user")
-    })
-  }
+      localStorage.removeItem("user");
+    });
+  };
   useEffect(() => {
     if (!accessToken) {
-      navigate("/signin")
+      navigate("/signin");
     }
-  }, [accessToken, navigate])
+  }, [accessToken, navigate]);
 
   return (
     <>
@@ -39,10 +39,10 @@ const Header = () => {
         <Button onClick={logOutUser}>Log out</Button>
       </nav>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const Button = styled.button`
   width: 150px;
@@ -54,4 +54,4 @@ const Button = styled.button`
   box-shadow: 0px 8px 15px gray;
   transition: all 0.3s ease 0s;
   cursor: pointer;
-`
+`;

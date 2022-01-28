@@ -1,13 +1,12 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import PreviousRetro from "./PreviousRetro"
-import Header from "./Header"
+import React from "react";
+import { useSelector } from "react-redux";
+import PreviousRetro from "./PreviousRetro";
+import Header from "./Header";
 
 // import styled from "styled-components";
 
 const ProfilePage = () => {
-  const userId = useSelector((store) => store.user.userId.username)
-
+  const userId = useSelector((store) => store.user.userId.username);
   return (
     <>
       <Header />
@@ -15,7 +14,7 @@ const ProfilePage = () => {
       <p>Hello {userId}</p>
       <PreviousRetro />
     </>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
