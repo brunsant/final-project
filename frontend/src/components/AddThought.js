@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import { THOUGHT_URL } from "../utils/constants";
-import { useSelector } from "react-redux";
+import React, { useState } from "react"
+import { THOUGHT_URL } from "../utils/constants"
+import { useSelector } from "react-redux"
+// import { useLocation } from "react-router-dom"
 
 // import retro from "../reducers/retro";
 
 // import styled from "styled-components";
 
 const AddThoughts = () => {
-  const [newThought, setNewThought] = useState("");
+  // const location = useLocation()
+  // const { from } = location.state
 
-  const retroId = useSelector((store) => store.retro);
-  console.log("RETRO ID Thought", retroId);
+  const [newThought, setNewThought] = useState("")
+
+  const retroId = useSelector((store) => store.retro)
+  console.log("RETRO ID Thought", retroId)
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const options = {
       method: "POST",
@@ -24,13 +28,13 @@ const AddThoughts = () => {
         description: newThought,
         retro: retroId._id,
       }),
-    };
+    }
     fetch(THOUGHT_URL, options)
       .then((res) => res.json())
       .then((data) => {
-        setNewThought("");
-      });
-  };
+        setNewThought("")
+      })
+  }
 
   return (
     <>
@@ -54,7 +58,7 @@ const AddThoughts = () => {
         <button type="submit">Post</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default AddThoughts;
+export default AddThoughts

@@ -1,32 +1,32 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import React from "react"
+import { Provider } from "react-redux"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { configureStore, combineReducers } from "@reduxjs/toolkit"
 
-import Main from "./components/Main";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
-import NotFound from "./components/NotFound";
-import ProfilePage from "./components/ProfilePage";
-import Thoughts from "./screens/Thoughts";
+import Main from "./components/Main"
+import Signin from "./components/Signin"
+import Signup from "./components/Signup"
+import NotFound from "./components/NotFound"
+import ProfilePage from "./components/ProfilePage"
+import Thoughts from "./screens/Thoughts"
 
-import user from "./reducers/user";
-import retro from "./reducers/retro";
+import user from "./reducers/user"
+import retro from "./reducers/retro"
 
 const reducer = combineReducers({
   user: user.reducer,
   retro: retro.reducer,
-});
+})
 
-const store = configureStore({ reducer });
+const store = configureStore({ reducer })
 
 // // -- add local storage
 
-// const persistedStateJSON = localStorage.getItem("reduxState");
-// let persistedState = {};
+// const persistedStateJSON = localStorage.getItem("reduxState")
+// let persistedState = {}
 
 // if (persistedStateJSON) {
-//   persistedState = JSON.parse(persistedStateJSON);
+//   persistedState = JSON.parse(persistedStateJSON)
 // }
 
 // const store = createStore(
@@ -34,11 +34,11 @@ const store = configureStore({ reducer });
 //   persistedState,
 //   // -- to make the redux devtools work
 //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+// )
 
 // store.subscribe(() => {
-//   localStorage.setItem("reduxState", JSON.stringify(store.getState()));
-// });
+//   localStorage.setItem("reduxState", JSON.stringify(store.getState()))
+// })
 
 function App() {
   return (
@@ -54,7 +54,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App
