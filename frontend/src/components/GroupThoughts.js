@@ -2,37 +2,47 @@ import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 
-import { RETRO_URL } from "../utils/constants"
+import { THOUGHT_RETRO_URL } from "../utils/constants"
 
 import styled from "styled-components"
 
 import retro from "../reducers/retro"
 
-const ActiveRetro = () => {
-  const [userRetro, setUserRetro] = useState([])
+const GroupThoughts = () => {
+  const [retroThoughts, setRetroThoughts] = useState([])
 
-  const userId = useSelector((store) => store.user.userId)
-  // const retroId = useSelector((store) => store.retro._id)
-  // console.log("RETRO ID ACTIVE RETRO", retroId)
+  const retroId = useSelector((store) => store.retro._id)
+  console.log("RETRO ID THOUGHTS", retroId)
 
   useEffect(() => {
-    fetch(RETRO_URL(`${userId._id}`))
-      .then((res) => res.json())
-      .then((data) => setUserRetro(data.response))
-  }, [userId])
-  // console.log("RETRO USE EFFECT", userRetro)
+    const options = {
+      method: "GET",
+    }
 
-  const dispatch = useDispatch()
-  const onButtonClick = (id) => {
-    dispatch(retro.actions.setRetroId(id))
-  }
+    fetch(THOUGHT_RETRO_URL(`${retroId}`), options)
+      .then((res) => res.json())
+      .then((data) => setRetroThoughts(data.response))
+  }, [retroId])
+  console.log("RETRO USE EFFECT", retroThoughts)
+
+  //   const dispatch = useDispatch()
+  //   const onButtonClick = (id) => {
+  //     dispatch(retro.actions.setRetroId(id))
+  //   }
 
   // IMPORTANT - display new retro as soon as published without reload
-  if (userRetro.length > 0) {
-    return (
-      <>
-        <h1>Active Retros</h1>
-        <RetroContainer>
+  return (
+    <>
+      <h1> THOUGHTS </h1>
+      {/* {retroThoughts.map((item) => (
+        <p>{item.description}</p>
+      ))} */}
+    </>
+  )
+}
+
+{
+  /* <RetroContainer>
           {userRetro.map((item) => (
             <RetroCard key={item._id}>
               <p>{item.description}</p>
@@ -42,21 +52,10 @@ const ActiveRetro = () => {
               </Button>
             </RetroCard>
           ))}
-        </RetroContainer>
-      </>
-    )
-  }
-
-  if (userRetro.length < 1)
-    return (
-      <>
-        <h1>Active Retros</h1>
-        <p>You don't have any retro</p>
-      </>
-    )
+        </RetroContainer> */
 }
 
-export default ActiveRetro
+export default GroupThoughts
 
 const RetroCard = styled.div`
   width: 250px;

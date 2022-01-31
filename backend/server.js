@@ -73,6 +73,10 @@ const ThoughtSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Retro",
   },
+  category: {
+    type: String,
+    enum: ["Drop", "Add", "Keep", "Improve"],
+  },
 })
 
 const Thought = mongoose.model("Thought", ThoughtSchema)
@@ -222,13 +226,14 @@ app.post("/retros", async (req, res) => {
 })
 // Thoughts
 app.post("/retros/:retro/thoughts", async (req, res) => {
-  const { description, retro } = req.body
+  const { description, retro, category } = req.body
 
   try {
     const queriedRetro = await Retro.findById(retro)
     const newThought = await new Thought({
       description,
       retro: queriedRetro,
+      category,
     }).save()
 
     res.status(201).json({ response: newThought, success: true })
