@@ -12,7 +12,7 @@ const ActiveRetro = () => {
   const [userRetro, setUserRetro] = useState([])
 
   const userId = useSelector((store) => store.user.userId)
-  // const retroId = useSelector((store) => store.retro._id)
+
   // console.log("RETRO ID ACTIVE RETRO", retroId)
 
   useEffect(() => {

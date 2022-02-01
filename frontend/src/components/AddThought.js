@@ -34,9 +34,8 @@ const AddThoughts = () => {
     }
     fetch(THOUGHT_URL(`${retroId._id}`), options)
       .then((res) => res.json())
-      .then((data) => {
-        setNewThought("")
-      })
+      .then((data) => setNewThought(data))
+      .finally(() => setNewThought(""))
   }
 
   return (

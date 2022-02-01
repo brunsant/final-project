@@ -21,10 +21,9 @@ const GroupThoughts = () => {
 
     fetch(THOUGHT_RETRO_URL(`${retroId}`), options)
       .then((res) => res.json())
-      .then((data) => setRetroThoughts(data.response))
+      .then((data) => setRetroThoughts(data))
   }, [retroId])
-  console.log("RETRO USE EFFECT", retroThoughts)
-
+  console.log("GET RETRO THOUGHTS!!!!", retroThoughts)
   //   const dispatch = useDispatch()
   //   const onButtonClick = (id) => {
   //     dispatch(retro.actions.setRetroId(id))
@@ -34,9 +33,9 @@ const GroupThoughts = () => {
   return (
     <>
       <h1> THOUGHTS </h1>
-      {/* {retroThoughts.map((item) => (
-        <p>{item.description}</p>
-      ))} */}
+      {retroThoughts.map((item) => (
+        <p key={item._id}>{item.description}</p>
+      ))}
     </>
   )
 }
