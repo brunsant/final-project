@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <>
-      <h1>Welcome to the retro app!</h1>
+      <h1>Welcome to the sprint retrospective app</h1>
       <nav>
         <Button>
           <Link to="/">Main</Link>
