@@ -10,7 +10,6 @@ import NotFound from "./components/NotFound"
 import ProfilePage from "./components/ProfilePage"
 import Thoughts from "./screens/Thoughts"
 import Grouping from "./screens/Grouping"
-import GroupThoughts from "./components/GroupThoughts"
 
 import user from "./reducers/user"
 import retro from "./reducers/retro"
@@ -52,7 +51,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/profilepage" element={<ProfilePage />} />
           <Route path="/thoughts" element={<Thoughts />} />
-          <Route path="/grouping" element={<GroupThoughts />} />
+          <Route path="/grouping" element={<Grouping />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "framer-motion": "^6.2.3",
     "i": "^0.3.7",
+    "immer": "^9.0.12",
     "npm": "^8.4.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
