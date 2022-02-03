@@ -1,23 +1,25 @@
 import React from "react"
 import Header from "../components/Header"
 import { Link } from "react-router-dom"
-import GroupThoughts from "../components/GroupThoughts"
+import GetThoughts from "../components/GetThoughts"
+import GetActionItems from "../components/GetActionItems"
 
 import styled from "styled-components"
 
-const Grouping = () => {
+const Summary = () => {
   return (
     <>
       <Header />
-      <GroupThoughts />
+      <GetThoughts />
+      <GetActionItems />
       <SubmitButton>
-        <Link to="/actionitems"> Go to next </Link>
+        <Link to="/"> Back to main </Link>
       </SubmitButton>
     </>
   )
 }
 
-export default Grouping
+export default Summary
 
 const SubmitButton = styled.button`
   padding: 10px;

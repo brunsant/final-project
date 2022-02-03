@@ -1,12 +1,12 @@
 import React, { useState } from "react"
-import { THOUGHT_URL } from "../utils/constants"
+import { ACTION_PLAN_URL } from "../utils/constants"
 import { useSelector } from "react-redux"
 
 import styled from "styled-components"
 
-const AddThoughts = () => {
-  const [newThought, setNewThought] = useState("")
-  const [category, setCategory] = useState("")
+const AddActionItems = () => {
+  const [newAction, setNewAction] = useState("")
+  const [name, setName] = useState("")
 
   const retroId = useSelector((store) => store.retro)
   // console.log("RETRO ID Thought", retroId)
@@ -24,35 +24,34 @@ const AddThoughts = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        description: newThought,
+        description: newAction,
+        name,
         retro: retroId._id,
-        category,
       }),
     }
-    fetch(THOUGHT_URL(`${retroId._id}`), options)
+    fetch(ACTION_PLAN_URL(`${retroId._id}`), options)
       .then((res) => res.json())
-      .then((data) => setNewThought(data))
-      .finally(() => setNewThought(""))
+      .then((data) => setNewAction(data))
+      .finally(() => setNewAction(""), setName(""))
   }
 
   return (
     <>
-      <p>{retroId._id}</p>
       <form onSubmit={handleFormSubmit}>
         <Input
           required
           type="text"
-          value={newThought}
-          onChange={(e) => setNewThought(e.target.value)}
-          placeholder="Add you thought here!"
+          value={newAction}
+          onChange={(e) => setNewAction(e.target.value)}
+          placeholder="Add your action here!"
         ></Input>
-        <Select required onChange={(e) => setCategory(e.target.value)}>
-          <option value="">Select category</option>
-          <option value="Drop">Drop</option>
-          <option value="Add">Add</option>
-          <option value="Keep">Keep</option>
-          <option value="Improve">Improve</option>
-        </Select>
+        <Input
+          required
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Add the reponsable here!"
+        ></Input>
         <SubmitButton onClick={RefreshButton} type="submit">
           Post
         </SubmitButton>
@@ -61,7 +60,7 @@ const AddThoughts = () => {
   )
 }
 
-export default AddThoughts
+export default AddActionItems
 
 const Input = styled.input`
   padding: 20px;
@@ -69,11 +68,6 @@ const Input = styled.input`
   margin-left: 17px;
 `
 
-const Select = styled.select`
-  padding: 20px;
-  border-radius: 5px;
-  margin-left: 17px;
-`
 const SubmitButton = styled.button`
   padding: 10px;
   margin: 20px;

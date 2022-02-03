@@ -6,8 +6,11 @@ export const API_URL = (slug) => `${BASE_URL}/${slug}`
 // GET request to get retros by user
 export const RETRO_URL = (userId) => `${BASE_URL}/users/${userId}/retros`
 
-// POST request to post thoughts by retro
+// POST/GET request to post thoughts by retro
 export const THOUGHT_URL = (id) => `${BASE_URL}/retros/${id}/thoughts`
 
-//GET request to get thoughts by retro
-export const THOUGHT_RETRO_URL = (id) => `${BASE_URL}/retros/${id}/thoughts`
+// POST request to post action plan tasks
+export const ACTION_PLAN_URL = (id) => `${BASE_URL}/retros/${id}/actionitems`
+
+// PATCH request to set retro to inactive
+export const ACTIVE_URL = (id) => `${BASE_URL}/retros/${id}`

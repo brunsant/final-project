@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 
-import { THOUGHT_RETRO_URL } from "../utils/constants"
+import { THOUGHT_URL } from "../utils/constants"
 
 const GetThoughts = () => {
   const [retroThoughts, setRetroThoughts] = useState([])
@@ -11,7 +11,7 @@ const GetThoughts = () => {
   // console.log("RETRO ID THOUGHTS", retroId);
 
   useEffect(() => {
-    fetch(THOUGHT_RETRO_URL(`${retroId}`))
+    fetch(THOUGHT_URL(`${retroId}`))
       .then((res) => res.json())
       .then((data) => setRetroThoughts(data))
   }, [retroId])

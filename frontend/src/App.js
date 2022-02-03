@@ -1,7 +1,7 @@
 import React from "react"
 import { Provider } from "react-redux"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { configureStore, combineReducers } from "@reduxjs/toolkit"
+import { createStore, combineReducers } from "@reduxjs/toolkit"
 
 import Main from "./components/Main"
 import Signin from "./components/Signin"
@@ -10,6 +10,8 @@ import NotFound from "./components/NotFound"
 import ProfilePage from "./components/ProfilePage"
 import Thoughts from "./screens/Thoughts"
 import Grouping from "./screens/Grouping"
+import ActionItems from "./screens/ActionItems"
+import Summary from "./screens/Summary"
 
 import user from "./reducers/user"
 import retro from "./reducers/retro"
@@ -19,27 +21,27 @@ const reducer = combineReducers({
   retro: retro.reducer,
 })
 
-const store = configureStore({ reducer })
+// const store = configureStore({ reducer })
 
-// // -- add local storage
+// -- add local storage
 
-// const persistedStateJSON = localStorage.getItem("reduxState")
-// let persistedState = {}
+const persistedStateJSON = localStorage.getItem("reduxState")
+let persistedState = {}
 
-// if (persistedStateJSON) {
-//   persistedState = JSON.parse(persistedStateJSON)
-// }
+if (persistedStateJSON) {
+  persistedState = JSON.parse(persistedStateJSON)
+}
 
-// const store = createStore(
-//   reducer,
-//   persistedState,
-//   // -- to make the redux devtools work
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// )
+const store = createStore(
+  reducer,
+  persistedState,
+  // -- to make the redux devtools work
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
-// store.subscribe(() => {
-//   localStorage.setItem("reduxState", JSON.stringify(store.getState()))
-// })
+store.subscribe(() => {
+  localStorage.setItem("reduxState", JSON.stringify(store.getState()))
+})
 
 function App() {
   return (
@@ -52,6 +54,8 @@ function App() {
           <Route path="/profilepage" element={<ProfilePage />} />
           <Route path="/thoughts" element={<Thoughts />} />
           <Route path="/grouping" element={<Grouping />} />
+          <Route path="/actionitems" element={<ActionItems />} />
+          <Route path="/summary" element={<Summary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

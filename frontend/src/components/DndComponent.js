@@ -19,7 +19,7 @@ const DndComponent = ({ retroThoughts }) => {
   const [state, dispatch] = useReducer(dragReducer, {
     retroThoughts,
   })
-  console.log("DND", retroThoughts)
+  // console.log("DND", retroThoughts)
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {

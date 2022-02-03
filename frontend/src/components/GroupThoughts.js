@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { THOUGHT_RETRO_URL } from "../utils/constants"
+import { THOUGHT_URL } from "../utils/constants"
 import DndComponent from "./DndComponent"
 
 // import styled from "styled-components";
@@ -16,7 +16,7 @@ const GroupThoughts = () => {
       method: "GET",
     }
 
-    fetch(THOUGHT_RETRO_URL(`${retroId}`), options)
+    fetch(THOUGHT_URL(`${retroId}`), options)
       .then((res) => res.json())
       .then((data) => setRetroThoughts(data))
   }, [retroId])

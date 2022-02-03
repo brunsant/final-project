@@ -62,6 +62,7 @@ const RetroSchema = mongoose.Schema({
       ref: "User",
     },
   ],
+  active: Boolean,
 })
 
 const Retro = mongoose.model("Retro", RetroSchema)
@@ -83,7 +84,7 @@ const Thought = mongoose.model("Thought", ThoughtSchema)
 
 const ActionSchema = mongoose.Schema({
   description: String,
-
+  name: String,
   retro: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Retro",
@@ -205,7 +206,7 @@ app.post("/signin", async (req, res) => {
 
 // Retros
 app.post("/retros", async (req, res) => {
-  const { description, admin, participants } = req.body
+  const { description, admin, participants, active } = req.body
 
   try {
     const queriedAdmin = await User.findById(admin)
@@ -217,6 +218,7 @@ app.post("/retros", async (req, res) => {
       description,
       admin: queriedAdmin,
       participants: queriedParticipants,
+      active,
     }).save()
 
     res.status(201).json({ response: newRetro, success: true })
@@ -243,12 +245,13 @@ app.post("/retros/:retro/thoughts", async (req, res) => {
 })
 // Action Items
 app.post("/retros/:retro/actionitems", async (req, res) => {
-  const { description, retro } = req.body
+  const { description, name, retro } = req.body
 
   try {
     const queriedRetro = await Retro.findById(retro)
     const newActionItem = await new ActionItem({
       description,
+      name,
       retro: queriedRetro,
     }).save()
 
@@ -280,6 +283,24 @@ app.post("/retros/:retro/actionitems", async (req, res) => {
 //     res.status(400).json({ response: error, success: false })
 //   }
 // })
+// Retro
+app.patch("/retros/:retroId", async (req, res) => {
+  const { retroId } = req.params
+
+  try {
+    const updatedRetro = await Retro.findOneAndUpdate(
+      { _id: retroId },
+      req.body
+    )
+    if (updatedRetro) {
+      res.status(201).json({ response: updatedRetro, success: true })
+    } else {
+      res.status(404).json({ response: "Retro not found", succes: false })
+    }
+  } catch (error) {
+    res.status(400).json({ response: error, success: false })
+  }
+})
 // Thoughts
 app.patch("/retros/thoughts/:thoughtId", async (req, res) => {
   const { thoughtId } = req.params

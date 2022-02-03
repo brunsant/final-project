@@ -27,13 +27,14 @@ const ActiveRetro = () => {
     dispatch(retro.actions.setRetroId(id))
   }
 
+  const activeFilter = userRetro.filter((item) => item.active === true)
   // IMPORTANT - display new retro as soon as published without reload
   if (userRetro.length > 0) {
     return (
       <>
         <h1>Active Retros</h1>
         <RetroContainer>
-          {userRetro.map((item) => (
+          {activeFilter.map((item) => (
             <RetroCard key={item._id}>
               <p>{item.description}</p>
               <p>{item._id}</p>
