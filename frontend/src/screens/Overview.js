@@ -6,7 +6,7 @@ import GetActionItems from "../components/GetActionItems";
 
 import styled from "styled-components";
 
-const Summary = () => {
+const Overview = () => {
   return (
     <>
       <Header />
@@ -19,7 +19,7 @@ const Summary = () => {
   );
 };
 
-export default Summary;
+export default Overview;
 
 const SubmitButton = styled.button`
   padding: 10px;
