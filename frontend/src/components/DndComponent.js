@@ -1,30 +1,31 @@
-import { useCallback, useReducer } from "react"
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import produce from "immer"
+import { useCallback, useReducer } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import produce from "immer";
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 const dragReducer = produce((draft, action) => {
+  // eslint-disable-next-line default-case
   switch (action.type) {
     case "MOVE": {
-      draft[action.from] = draft[action.from] || []
-      draft[action.to] = draft[action.to] || []
-      const [removed] = draft[action.from].splice(action.fromIndex, 1)
-      draft[action.to].splice(action.toIndex, 0, removed)
+      draft[action.from] = draft[action.from] || [];
+      draft[action.to] = draft[action.to] || [];
+      const [removed] = draft[action.from].splice(action.fromIndex, 1);
+      draft[action.to].splice(action.toIndex, 0, removed);
     }
   }
-})
+});
 
 const DndComponent = ({ retroThoughts }) => {
   const [state, dispatch] = useReducer(dragReducer, {
-    retroThoughts,
-  })
-  // console.log("DND", retroThoughts)
+    items: retroThoughts,
+  });
+  console.log("DND", retroThoughts);
 
   const onDragEnd = useCallback((result) => {
     if (result.reason === "DROP") {
       if (!result.destination) {
-        return
+        return;
       }
       dispatch({
         type: "MOVE",
@@ -32,23 +33,23 @@ const DndComponent = ({ retroThoughts }) => {
         to: result.destination.droppableId,
         fromIndex: result.source.index,
         toIndex: result.destination.index,
-      })
+      });
     }
-  }, [])
+  }, []);
 
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Container>
-          <Droppable droppableId="retroThoughts" type="THOUGHT">
+          <Droppable droppableId="items" type="THOUGHT">
             {(provided, snapshot) => {
               return (
                 <Column ref={provided.innerRef} {...provided.droppableProps}>
-                  {state.retroThoughts?.map((thought, index) => {
+                  {state.items?.map((thought, index) => {
                     return (
                       <Draggable
-                        key={thought._id}
-                        draggableId={thought._id}
+                        key={thought.id}
+                        draggableId={thought.id}
                         index={index}
                       >
                         {(provided, snapshot) => {
@@ -59,17 +60,17 @@ const DndComponent = ({ retroThoughts }) => {
                               {...provided.dragHandleProps}
                             >
                               <div>
-                                <span>{thought.description}</span>
+                                <span>{thought.name}</span>
                               </div>
                             </div>
-                          )
+                          );
                         }}
                       </Draggable>
-                    )
+                    );
                   })}
                   {provided.placeholder}
                 </Column>
-              )
+              );
             }}
           </Droppable>
           <Droppable droppableId="items2" type="THOUGHT">
@@ -79,8 +80,8 @@ const DndComponent = ({ retroThoughts }) => {
                   {state.items2?.map((thought, index) => {
                     return (
                       <Draggable
-                        key={thought._id}
-                        draggableId={thought._id}
+                        key={thought.id}
+                        draggableId={thought.id}
                         index={index}
                       >
                         {(provided, snapshot) => {
@@ -91,34 +92,34 @@ const DndComponent = ({ retroThoughts }) => {
                               {...provided.dragHandleProps}
                             >
                               <div>
-                                <span>{thought.description}</span>
+                                <span>{thought.name}</span>
                               </div>
                             </div>
-                          )
+                          );
                         }}
                       </Draggable>
-                    )
+                    );
                   })}
                   {provided.placeholder}
                 </Column>
-              )
+              );
             }}
           </Droppable>
         </Container>
       </DragDropContext>
     </div>
-  )
-}
+  );
+};
 
-export default DndComponent
+export default DndComponent;
 
 const Container = styled.div`
   display: flex;
   justify-content: space-around;
-`
+`;
 
 const Column = styled.div`
   border: 1px solid lightblue;
   width: 30%;
   height: 200px;
-`
+`;

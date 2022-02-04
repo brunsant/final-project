@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from "react"
-import { useSelector, useDispatch, batch } from "react-redux"
-import Header from "./Header"
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch, batch } from "react-redux";
+import { WithContext as ReactTags } from "react-tag-input";
 
-import { API_URL } from "../utils/constants"
-// import user from "../reducers/user"
-import retro from "../reducers/retro"
-import { WithContext as ReactTags } from "react-tag-input"
-import styled from "styled-components"
-import ActiveRetro from "./ActiveRetro"
+import { API_URL } from "../utils/constants";
+import retro from "../reducers/retro";
+import Header from "./Header";
+import styled from "styled-components";
+import ActiveRetro from "./ActiveRetro";
 
 export const Main = () => {
-  const [description, setDescription] = useState("")
-  const [participants, setParticipants] = useState([])
-  const [userList, setUserList] = useState("")
+  const [description, setDescription] = useState("");
+  const [participants, setParticipants] = useState([]);
+  const [userList, setUserList] = useState("");
 
-  const userId = useSelector((store) => store.user.userId)
+  const userId = useSelector((store) => store.user.userId);
 
   const RefreshButton = () => {
-    window.location.reload("Refresh")
-  }
+    window.location.reload("Refresh");
+  };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onFormSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const options = {
       method: "POST",
       headers: {
@@ -35,37 +34,37 @@ export const Main = () => {
         participants,
         active: true,
       }),
-    }
+    };
 
     fetch(API_URL("retros"), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log("RETRO DATA", data)
+        console.log("RETRO DATA", data);
         if (data.success) {
           batch(() => {
-            dispatch(retro.actions.setRetroId(data.response._id))
-            dispatch(retro.actions.setDescription(data.response.description))
-            dispatch(retro.actions.setAdmin(data.response.admin))
-            dispatch(retro.actions.setParticipants(data.response.participants))
-            dispatch(retro.actions.setActive(true))
-            dispatch(retro.actions.setError(null))
-          })
+            dispatch(retro.actions.setRetroId(data.response._id));
+            dispatch(retro.actions.setDescription(data.response.description));
+            dispatch(retro.actions.setAdmin(data.response.admin));
+            dispatch(retro.actions.setParticipants(data.response.participants));
+            dispatch(retro.actions.setActive(true));
+            dispatch(retro.actions.setError(null));
+          });
         } else {
           batch(() => {
-            dispatch(retro.actions.setDescription(null))
-            dispatch(retro.actions.setAdmin(null))
-            dispatch(retro.actions.setParticipants(null))
-            dispatch(retro.actions.setError(data.response))
-          })
+            dispatch(retro.actions.setDescription(null));
+            dispatch(retro.actions.setAdmin(null));
+            dispatch(retro.actions.setParticipants(null));
+            dispatch(retro.actions.setError(data.response));
+          });
         }
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     fetch(API_URL("users"))
       .then((res) => res.json())
-      .then((data) => setUserList(data.response))
-  }, [])
+      .then((data) => setUserList(data.response));
+  }, []);
 
   // console.log("USERS", userList)
 
@@ -79,37 +78,37 @@ export const Main = () => {
   const KeyCodes = {
     comma: 188,
     enter: 13,
-  }
+  };
 
-  const delimiters = [KeyCodes.comma, KeyCodes.enter]
+  const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
   const handleDelete = (i) => {
-    setParticipants(participants.filter((tag, index) => index !== i))
-  }
+    setParticipants(participants.filter((tag, index) => index !== i));
+  };
 
   const handleAddition = (tag) => {
-    const addUser = userList.find((user) => user.username === tag.text)
+    const addUser = userList.find((user) => user.username === tag.text);
 
     if (addUser) {
-      setParticipants([...participants, tag])
+      setParticipants([...participants, tag]);
     } else {
-      alert("Invalid username")
+      alert("Invalid username");
     }
-  }
+  };
 
   const handleDrag = (tag, currPos, newPos) => {
-    const newParticipants = participants.slice()
+    const newParticipants = participants.slice();
 
-    newParticipants.splice(currPos, 1)
-    newParticipants.splice(newPos, 0, tag)
+    newParticipants.splice(currPos, 1);
+    newParticipants.splice(newPos, 0, tag);
 
     // re-render
-    setParticipants(newParticipants)
-  }
+    setParticipants(newParticipants);
+  };
 
   const handleTagClick = (index) => {
-    console.log("The tag at index " + index + " was clicked")
-  }
+    console.log("The tag at index " + index + " was clicked");
+  };
   return (
     <>
       <Header />
@@ -147,17 +146,17 @@ export const Main = () => {
         <ActiveRetro />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-top: 10%;
-`
+`;
 
 const Form = styled.form`
   display: flex;
@@ -175,15 +174,15 @@ const Form = styled.form`
     width: 20%;
     padding: 30px 25px;
   }
-`
+`;
 const ParticipantContainer = styled.div`
   margin: 20px;
-`
+`;
 const Input = styled.input`
   padding: 20px;
   border-radius: 5px;
   margin-left: 17px;
-`
+`;
 
 const SubmitButton = styled.button`
   padding: 10px;
@@ -194,4 +193,4 @@ const SubmitButton = styled.button`
   box-shadow: 0px 8px 15px gray;
   transition: all 0.3s ease 0s;
   cursor: pointer;
-`
+`;
