@@ -1,41 +1,29 @@
-import { useCallback, useReducer } from "react";
+import { useCallback } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import produce from "immer";
 
 import styled from "styled-components";
 
-const dragReducer = produce((draft, action) => {
-  // eslint-disable-next-line default-case
-  switch (action.type) {
-    case "MOVE": {
-      draft[action.from] = draft[action.from] || [];
-      draft[action.to] = draft[action.to] || [];
-      const [removed] = draft[action.from].splice(action.fromIndex, 1);
-      draft[action.to].splice(action.toIndex, 0, removed);
-    }
-  }
-});
+const DndComponent = ({ state, dispatch }) => {
+  console.log("DND", state);
 
-const DndComponent = ({ retroThoughts }) => {
-  const [state, dispatch] = useReducer(dragReducer, {
-    items: retroThoughts,
-  });
-  console.log("DND", retroThoughts);
-
-  const onDragEnd = useCallback((result) => {
-    if (result.reason === "DROP") {
-      if (!result.destination) {
-        return;
+  const onDragEnd = useCallback(
+    (result) => {
+      if (result.reason === "DROP") {
+        if (!result.destination) {
+          return;
+        }
+        dispatch({
+          type: "MOVE",
+          from: result.source.droppableId,
+          to: result.destination.droppableId,
+          fromIndex: result.source.index,
+          toIndex: result.destination.index,
+        });
       }
-      dispatch({
-        type: "MOVE",
-        from: result.source.droppableId,
-        to: result.destination.droppableId,
-        fromIndex: result.source.index,
-        toIndex: result.destination.index,
-      });
-    }
-  }, []);
+    },
+    [dispatch]
+    //NEEDED TO ADD THE DISPATCH BECAUSE OF A WARNING ON THE TERMINAL. IT WAS EMPTY BEFORE!
+  );
 
   return (
     <div>
@@ -60,7 +48,9 @@ const DndComponent = ({ retroThoughts }) => {
                               {...provided.dragHandleProps}
                             >
                               <div>
-                                <span>{thought.name}</span>
+                                <span>
+                                  {thought.description}-{thought.category}
+                                </span>
                               </div>
                             </div>
                           );
@@ -92,7 +82,9 @@ const DndComponent = ({ retroThoughts }) => {
                               {...provided.dragHandleProps}
                             >
                               <div>
-                                <span>{thought.name}</span>
+                                <span>
+                                  {thought.description}-{thought.category}
+                                </span>
                               </div>
                             </div>
                           );
