@@ -14,3 +14,6 @@ export const ACTION_PLAN_URL = (id) => `${BASE_URL}/retros/${id}/actionitems`
 
 // PATCH request to set retro to inactive
 export const ACTIVE_URL = (id) => `${BASE_URL}/retros/${id}`
+
+//DELETE request for the retros
+export const DELETE_RETRO = (id) => `${BASE_URL}/retros/${id}`

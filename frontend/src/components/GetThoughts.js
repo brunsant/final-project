@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
+import LoadingLottie from "./LoadingLottie"
 
 import { THOUGHT_URL } from "../utils/constants"
 
 const GetThoughts = () => {
   const [retroThoughts, setRetroThoughts] = useState([])
+  const [load, setLoad] = useState(false)
 
   const retroId = useSelector((store) => store.retro._id)
   // console.log("RETRO ID THOUGHTS", retroId);
 
   useEffect(() => {
+    fetchThoughts()
+  }, [retroId])
+
+  const fetchThoughts = () => {
+    setLoad(true)
     fetch(THOUGHT_URL(`${retroId}`))
       .then((res) => res.json())
       .then((data) => setRetroThoughts(data))
-  }, [retroId])
+      .finally(() => setLoad(false))
+  }
   // console.log("GET RETRO THOUGHTS!!!!", retroThoughts);
 
   const add = retroThoughts.filter((item) => item.category === "Add")
@@ -25,6 +33,7 @@ const GetThoughts = () => {
   return (
     <>
       <h1> THOUGHTS </h1>
+      {load && <LoadingLottie />}
       <Container>
         <Box>
           <h5>Add</h5>
