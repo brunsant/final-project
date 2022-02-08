@@ -29,21 +29,11 @@ const retro = createSlice({
     setActive: (store, action) => {
       store.active = action.payload;
     },
-    // toggleActive: (store, action) => {
-    //   const updatedRetro = store.items.map((item) => {
-    //     if (item.id === action.payload) {
-    //       const updatedTodo = {
-    //         ...item,
-    //         isComplete: !item.isComplete,
-    //       }
-    //       return updatedTodo
-    //     } else {
-    //       return item
-    //     }
-    //   })
-
-    //   store.items = updatedItems
-    // },
+    deleteRetro: (store, action) => {
+      store.retro = store.retro.filter((item) => retro._id !== action.payload);
+      console.log(store.retro, "retro");
+      console.log(action.payload, "payload");
+    },
   },
 });
 

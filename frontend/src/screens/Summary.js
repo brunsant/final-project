@@ -27,7 +27,7 @@ const SubmitButton = styled.button`
   border-radius: 15px;
   border: none;
   background-color: white;
-  box-shadow: 0px 8px 15px gray;
+  box-shadow: 0px 8px 15px #d3d3d3;
   transition: all 0.3s ease 0s;
   cursor: pointer;
 `;

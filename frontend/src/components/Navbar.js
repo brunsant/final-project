@@ -1,39 +1,39 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, batch } from "react-redux"
-import { useNavigate, Link } from "react-router-dom"
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react"
-import { HamburgerIcon } from "@chakra-ui/icons"
+import React, { useEffect } from "react";
+import { useSelector, useDispatch, batch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
-import user from "../reducers/user"
+import user from "../reducers/user";
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 const Header = () => {
-  const accessToken = useSelector((store) => store.user.accessToken)
+  const accessToken = useSelector((store) => store.user.accessToken);
   //   const userId = useSelector((store) => store.user.userId)
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logOutUser = () => {
     batch(() => {
-      dispatch(user.actions.setUsername(null))
-      dispatch(user.actions.setAccessToken(null))
+      dispatch(user.actions.setUsername(null));
+      dispatch(user.actions.setAccessToken(null));
 
-      localStorage.removeItem("user")
-    })
-  }
+      localStorage.removeItem("user");
+    });
+  };
   useEffect(() => {
     if (!accessToken) {
-      navigate("/signin")
+      navigate("/signin");
     }
-  }, [accessToken, navigate])
+  }, [accessToken, navigate]);
 
   return (
     <>
       <HamburgerContainer>
         <Menu>
           <MenuButton>
-            <HamburgerIcon w={8} h={8} color="black" />
+            <HamburgerIcon w={9} h={9} color="white" />
           </MenuButton>
           <MenuList>
             <MenuItem>
@@ -47,41 +47,42 @@ const Header = () => {
         </Menu>
       </HamburgerContainer>
       <ButtonsContainer>
-        <Button>
+        <LinkButton>
           <Link to="/">Main</Link>
-        </Button>
-        <Button>
-          <Link to="/profilepage">Profile page</Link>
-        </Button>
-        <Button onClick={logOutUser}>Log out</Button>
+        </LinkButton>
+        <LinkButton>
+          <Link to="/profilepage">Profile</Link>
+        </LinkButton>
+        <LinkButton onClick={logOutUser}>Log out</LinkButton>
       </ButtonsContainer>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const HamburgerContainer = styled.div`
   @media (min-width: 1025px) {
     display: none;
   }
-`
+`;
 
-const Button = styled.button`
-  width: 150px;
-  padding: 15px;
+const LinkButton = styled.span`
+  width: 100px;
+  padding: 5px;
   margin: 20px;
+
   border-radius: 15px;
   border: none;
-  background-color: white;
-  box-shadow: 0px 8px 15px gray;
-  transition: all 0.3s ease 0s;
   cursor: pointer;
-`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 const ButtonsContainer = styled.div`
   display: none;
 
   @media (min-width: 1025px) {
     display: block;
   }
-`
+`;
