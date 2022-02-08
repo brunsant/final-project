@@ -161,6 +161,11 @@ const Text = styled.p`
 `;
 
 const Image = styled.img`
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
+  align-self: center;
+  @media (min-width: 768px) {
+    width: 450px;
+    height: 450px;
+  }
 `;

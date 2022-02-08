@@ -112,6 +112,10 @@ export default GetThoughts;
 const ThoughtsAccordion = styled.div`
   margin: 10px 30px 20px;
   background-color: white;
+  @media (min-width: 991px) {
+    width: 40%;
+    margin: 10px 30px 0 0;
+  }
 `;
 
 const HeaderTitle = styled.h2`

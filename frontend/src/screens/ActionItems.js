@@ -29,7 +29,6 @@ const ActionItemContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   margin: 10px 30px;
-  height: 100vh;
 
   @media (min-width: 1025px) {
     flex-direction: row;
@@ -39,4 +38,7 @@ const ActionItemContainer = styled.div`
 const ActionItemsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;

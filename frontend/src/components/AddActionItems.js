@@ -55,7 +55,7 @@ const AddActionItems = () => {
   };
 
   return (
-    <div>
+    <AddActionItemContainer>
       <form onSubmit={handleFormSubmit}>
         <InputContainer>
           <Input
@@ -82,17 +82,24 @@ const AddActionItems = () => {
           </SubmitButton>
         </ButtonContainer>
       </form>
-    </div>
+    </AddActionItemContainer>
   );
 };
 
 export default AddActionItems;
+
+const AddActionItemContainer = styled.div`
+  width: 80%;
+`;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media (min-width: 1025px) {
+    margin-top: 40px;
+  }
 `;
 
 const ButtonContainer = styled.div`

@@ -127,6 +127,7 @@ const EmptyState = styled.div`
   align-items: center;
   flex-direction: column;
   margin-top: 50px;
+  width: 100%;
 `;
 
 const Image = styled.img`
@@ -134,8 +135,8 @@ const Image = styled.img`
   height: 250px;
 
   @media (min-width: 768px) {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
   }
 
   @media (min-width: 1025px) {
@@ -160,7 +161,6 @@ const TextTitle = styled.p`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 7px;
-
   @media (min-width: 768px) {
     font-size: 25px;
     margin-bottom: 10px;
@@ -168,6 +168,7 @@ const TextTitle = styled.p`
 
   @media (min-width: 1025px) {
     font-size: 26px;
+    margin-top: 100px;
   }
 `;
 

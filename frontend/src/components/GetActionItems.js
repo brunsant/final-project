@@ -42,6 +42,9 @@ const Container = styled.div`
   gap: 5px;
   width: 100%;
   background-color: white;
+  @media (min-width: 991px) {
+    width: 80%;
+  }
 `;
 
 const Action = styled.div`

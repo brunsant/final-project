@@ -14,6 +14,7 @@ const GetThoughts = () => {
 
   useEffect(() => {
     fetchThoughts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retroId]);
 
   const fetchThoughts = () => {

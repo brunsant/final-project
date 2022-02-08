@@ -10,24 +10,46 @@ const Summary = () => {
   return (
     <>
       <Header />
-      <GetThoughts />
-      <GetActionItems />
-      <SubmitButton>
-        <Link to="/"> Back to main </Link>
-      </SubmitButton>
+      <SummaryContainer>
+        <GetThoughts />
+        <GetActionItems />
+        <SubmitButton>
+          <Link to="/"> Back to main </Link>
+        </SubmitButton>
+      </SummaryContainer>
     </>
   );
 };
 
 export default Summary;
 
+const SummaryContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 30px;
+`;
+
 const SubmitButton = styled.button`
-  padding: 10px;
-  margin: 20px;
+  width: 130px;
+  font-size: 16px;
+  padding: 5px;
+  color: white;
+  margin: 5px;
   border-radius: 15px;
   border: none;
-  background-color: white;
-  box-shadow: 0px 8px 15px #d3d3d3;
+  align-self: center;
+  background-color: #66bfa6;
+  box-shadow: 0px 5px 6px #d3d3d3;
   transition: all 0.3s ease 0s;
   cursor: pointer;
+  @media (min-width: 768px) {
+    width: 120px;
+    font-size: 16px;
+  }
+  @media (min-width: 1025px) {
+    width: 150px;
+    font-size: 20px;
+  }
 `;

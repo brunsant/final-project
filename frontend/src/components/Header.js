@@ -5,6 +5,7 @@ import styled from "styled-components";
 const Header = () => {
   return (
     <HeaderContainer>
+      <Image src="logo.png" alt="logo" />
       <Title> RETRO</Title>
       <Navbar />
     </HeaderContainer>
@@ -38,5 +39,21 @@ const Title = styled.h1`
   @media (min-width: 768px) {
     font-size: 42px;
     color: white;
+  }
+`;
+
+const Image = styled.img`
+  width: 50px;
+  height: 50px;
+  margin: 10px 0 0 10px;
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+    margin: 10px 0 0 10px;
+  }
+  @media (min-width: 1025px) {
+    width: 100px;
+    height: 100px;
+    margin: 10px 0 0 20px;
   }
 `;
