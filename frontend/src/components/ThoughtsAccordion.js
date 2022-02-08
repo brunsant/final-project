@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import LoadingLottie from "./LoadingLottie";
 import {
   Accordion,
   AccordionItem,
@@ -15,21 +14,19 @@ import { THOUGHT_URL } from "../utils/constants";
 
 const GetThoughts = () => {
   const [retroThoughts, setRetroThoughts] = useState([]);
-  const [load, setLoad] = useState(false);
 
   const retroId = useSelector((store) => store.retro._id);
   // console.log("RETRO ID THOUGHTS", retroId);
 
   useEffect(() => {
     fetchThoughts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retroId]);
 
   const fetchThoughts = () => {
-    setLoad(true);
     fetch(THOUGHT_URL(`${retroId}`))
       .then((res) => res.json())
-      .then((data) => setRetroThoughts(data))
-      .finally(() => setLoad(false));
+      .then((data) => setRetroThoughts(data));
   };
   // console.log("GET RETRO THOUGHTS!!!!", retroThoughts);
 
