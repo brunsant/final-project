@@ -1,18 +1,18 @@
-import React from "react";
-import Navbar from "./Navbar";
-import styled from "styled-components";
+import React from "react"
+import Navbar from "./Navbar"
+import styled from "styled-components"
 
 const Header = () => {
   return (
     <HeaderContainer>
-      <Image src="logo.png" alt="logo" />
-      <Title> RETRO</Title>
+      <Image src="logo.svg" alt="logo" />
+      <Title>TEAM RETRO</Title>
       <Navbar />
     </HeaderContainer>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const HeaderContainer = styled.div`
   );
   min-height: 70px;
   padding-right: 20px;
-`;
+`
 
 const Title = styled.h1`
   font-size: 32px;
@@ -40,7 +40,7 @@ const Title = styled.h1`
     font-size: 42px;
     color: white;
   }
-`;
+`
 
 const Image = styled.img`
   width: 50px;
@@ -56,4 +56,4 @@ const Image = styled.img`
     height: 100px;
     margin: 10px 0 0 20px;
   }
-`;
+`

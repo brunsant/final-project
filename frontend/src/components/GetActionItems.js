@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
+import styled from "styled-components"
 
-import { ACTION_PLAN_URL } from "../utils/constants";
+import { ACTION_PLAN_URL } from "../utils/constants"
 
 const GetActionItems = () => {
-  const [actionItems, setActionItems] = useState([]);
+  const [actionItems, setActionItems] = useState([])
 
-  const retroId = useSelector((store) => store.retro._id);
+  const retroId = useSelector((store) => store.retro._id)
 
   useEffect(() => {
     fetch(ACTION_PLAN_URL(`${retroId}`))
       .then((res) => res.json())
-      .then((data) => setActionItems(data));
-  }, [retroId]);
+      .then((data) => setActionItems(data))
+  }, [retroId])
 
   return (
     <>
@@ -29,10 +29,10 @@ const GetActionItems = () => {
         </Box>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default GetActionItems;
+export default GetActionItems
 
 const Container = styled.div`
   display: flex;
@@ -41,11 +41,10 @@ const Container = styled.div`
   flex-wrap: wrap;
   gap: 5px;
   width: 100%;
-  background-color: white;
   @media (min-width: 991px) {
     width: 80%;
   }
-`;
+`
 
 const Action = styled.div`
   display: flex;
@@ -53,13 +52,13 @@ const Action = styled.div`
   column-gap: 10px;
   border: 2px solid #66bfa6;
   margin: 5px 0;
-`;
+`
 
 const Box = styled.div`
   width: 80%;
   /* border: 2px solid #66bfa6; */
   /* text-align: center; */
-`;
+`
 const HeaderTitle = styled.h2`
   font-size: 20px;
   text-align: center;
@@ -67,8 +66,8 @@ const HeaderTitle = styled.h2`
   @media (min-width: 768px) {
     font-size: 28px;
   }
-`;
+`
 
 const Text = styled.p`
   margin: 5px 10px;
-`;
+`

@@ -1,40 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import LoadingLottie from "./LoadingLottie";
+import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
+import styled from "styled-components"
 
-import { THOUGHT_URL } from "../utils/constants";
+import { THOUGHT_URL } from "../utils/constants"
 
 const GetThoughts = () => {
-  const [retroThoughts, setRetroThoughts] = useState([]);
-  const [load, setLoad] = useState(false);
+  const [retroThoughts, setRetroThoughts] = useState([])
 
-  const retroId = useSelector((store) => store.retro._id);
+  const retroId = useSelector((store) => store.retro._id)
   // console.log("RETRO ID THOUGHTS", retroId);
 
   useEffect(() => {
-    fetchThoughts();
+    fetchThoughts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retroId]);
+  }, [retroId])
 
   const fetchThoughts = () => {
-    setLoad(true);
     fetch(THOUGHT_URL(`${retroId}`))
       .then((res) => res.json())
       .then((data) => setRetroThoughts(data))
-      .finally(() => setLoad(false));
-  };
+  }
   // console.log("GET RETRO THOUGHTS!!!!", retroThoughts);
 
-  const add = retroThoughts.filter((item) => item.category === "Add");
-  const drop = retroThoughts.filter((item) => item.category === "Drop");
-  const keep = retroThoughts.filter((item) => item.category === "Keep");
-  const improve = retroThoughts.filter((item) => item.category === "Improve");
+  const add = retroThoughts.filter((item) => item.category === "Add")
+  const drop = retroThoughts.filter((item) => item.category === "Drop")
+  const keep = retroThoughts.filter((item) => item.category === "Keep")
+  const improve = retroThoughts.filter((item) => item.category === "Improve")
 
   return (
     <>
       <HeaderTitle> THOUGHTS </HeaderTitle>
-      {load && <LoadingLottie />}
+
       <Container>
         <Box>
           <Title>Add</Title>
@@ -62,10 +58,10 @@ const GetThoughts = () => {
         </Box>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default GetThoughts;
+export default GetThoughts
 
 const Container = styled.div`
   display: flex;
@@ -75,25 +71,38 @@ const Container = styled.div`
   gap: 5px;
   width: 100%;
   padding-top: 20px;
-`;
+
+  @media (min-width: 1025px) {
+    margin: 0 20px;
+    gap: 50px;
+  }
+`
 
 const Box = styled.div`
   width: 49%;
   min-height: 200px;
   border: 2px solid #66bfa6;
   text-align: center;
-  background-color: white;
-`;
+
+  @media (min-width: 1025px) {
+    width: 35%;
+  }
+`
 
 const Title = styled.h5`
   background-color: #66bfa6;
   color: white;
   font-weight: bold;
-`;
+
+  @media (min-width: 1025px) {
+    font-size: 25px;
+  }
+`
 const HeaderTitle = styled.h2`
   font-size: 22px;
+  font-weight: 700;
   text-align: center;
   @media (min-width: 768px) {
     font-size: 28px;
   }
-`;
+`

@@ -1,7 +1,7 @@
-import React from "react";
-import Header from "../components/Header";
+import React from "react"
+import Header from "../components/Header"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 const NotFound = () => {
   return (
@@ -13,22 +13,22 @@ const NotFound = () => {
           <h1>Page not found</h1>
         </TextContainer>
         <Image
-          src="notfound.png"
+          src="notfound.svg"
           alt="illustration of a group of people with a lightbulb"
         />
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound
 
 const Container = styled.div`
   display: flex;
   justify-contente: center;
   align-items: center;
   flex-direction: column;
-`;
+`
 
 const TextContainer = styled.div`
   text-align: center;
@@ -42,7 +42,7 @@ const TextContainer = styled.div`
   @media (min-width: 1025px) {
     font-size: 36px;
   }
-`;
+`
 const Image = styled.img`
   width: 300px;
   height: 300px;
@@ -55,4 +55,4 @@ const Image = styled.img`
     width: 550px;
     height: 550px;
   }
-`;
+`

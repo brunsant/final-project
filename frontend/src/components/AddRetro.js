@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch, batch } from "react-redux";
-import { WithContext as ReactTags } from "react-tag-input";
+import React, { useEffect, useState } from "react"
+import { useSelector, useDispatch, batch } from "react-redux"
+import { WithContext as ReactTags } from "react-tag-input"
+import swal from "sweetalert"
 
-import { API_URL } from "../utils/constants";
-import retro from "../reducers/retro";
-import styled from "styled-components";
+import { API_URL } from "../utils/constants"
+import retro from "../reducers/retro"
+import styled from "styled-components"
 
 export const AddRetro = () => {
-  const [description, setDescription] = useState("");
-  const [participants, setParticipants] = useState([]);
-  const [userList, setUserList] = useState("");
+  const [description, setDescription] = useState("")
+  const [participants, setParticipants] = useState([])
+  const [userList, setUserList] = useState("")
 
-  const userId = useSelector((store) => store.user.userId);
+  const userId = useSelector((store) => store.user.userId)
 
   const RefreshButton = () => {
-    window.location.reload("Refresh");
-  };
+    window.location.reload("Refresh")
+  }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const onFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const options = {
       method: "POST",
       headers: {
@@ -32,72 +33,77 @@ export const AddRetro = () => {
         participants,
         active: true,
       }),
-    };
+    }
 
     fetch(API_URL("retros"), options)
       .then((res) => res.json())
       .then((data) => {
-        console.log("RETRO DATA", data);
+        console.log("RETRO DATA", data)
         if (data.success) {
           batch(() => {
-            dispatch(retro.actions.setRetroId(data.response._id));
-            dispatch(retro.actions.setDescription(data.response.description));
-            dispatch(retro.actions.setAdmin(data.response.admin));
-            dispatch(retro.actions.setParticipants(data.response.participants));
-            dispatch(retro.actions.setActive(true));
-            dispatch(retro.actions.setError(null));
-          });
+            dispatch(retro.actions.setRetroId(data.response._id))
+            dispatch(retro.actions.setDescription(data.response.description))
+            dispatch(retro.actions.setAdmin(data.response.admin))
+            dispatch(retro.actions.setParticipants(data.response.participants))
+            dispatch(retro.actions.setActive(true))
+            dispatch(retro.actions.setError())
+          })
         } else {
           batch(() => {
-            dispatch(retro.actions.setDescription(null));
-            dispatch(retro.actions.setAdmin(null));
-            dispatch(retro.actions.setParticipants(null));
-            dispatch(retro.actions.setError(data.response));
-          });
+            dispatch(retro.actions.setDescription(null))
+            dispatch(retro.actions.setAdmin(null))
+            dispatch(retro.actions.setParticipants(null))
+            dispatch(retro.actions.setError())
+          })
         }
-      });
-  };
+      })
+    swal({
+      title: "Retro created successfully",
+      icon: "success",
+    }).then(RefreshButton)
+  }
 
   useEffect(() => {
     fetch(API_URL("users"))
       .then((res) => res.json())
-      .then((data) => setUserList(data.response));
-  }, []);
+      .then((data) => setUserList(data.response))
+  }, [])
 
   const KeyCodes = {
     comma: 188,
     enter: 13,
-  };
+  }
 
-  const delimiters = [KeyCodes.comma, KeyCodes.enter];
+  const delimiters = [KeyCodes.comma, KeyCodes.enter]
 
   const handleDelete = (i) => {
-    setParticipants(participants.filter((tag, index) => index !== i));
-  };
+    setParticipants(participants.filter((tag, index) => index !== i))
+  }
 
   const handleAddition = (tag) => {
-    const addUser = userList.find((user) => user.username === tag.text);
+    const addUser = userList.find((user) => user.username === tag.text)
 
     if (addUser) {
-      setParticipants([...participants, tag]);
+      setParticipants([...participants, tag])
     } else {
-      alert("Invalid username");
+      swal("Invalid username")
     }
-  };
+  }
 
   const handleDrag = (tag, currPos, newPos) => {
-    const newParticipants = participants.slice();
+    const newParticipants = participants.slice()
 
-    newParticipants.splice(currPos, 1);
-    newParticipants.splice(newPos, 0, tag);
+    newParticipants.splice(currPos, 1)
+    newParticipants.splice(newPos, 0, tag)
 
     // re-render
-    setParticipants(newParticipants);
-  };
+    setParticipants(newParticipants)
+  }
 
   const handleTagClick = (index) => {
-    console.log("The tag at index " + index + " was clicked");
-  };
+    console.log("The tag at index " + index + " was clicked")
+  }
+
   return (
     <RetroForm>
       <HeaderTitle> Create your retro here! </HeaderTitle>
@@ -125,23 +131,19 @@ export const AddRetro = () => {
           />
         </ParticipantContainer>
 
-        <SubmitButton onClick={RefreshButton} type="submit">
-          Create retro
-        </SubmitButton>
+        <SubmitButton type="submit">Create retro</SubmitButton>
       </Form>
     </RetroForm>
-  );
-};
+  )
+}
 
-export default AddRetro;
+export default AddRetro
 
 const RetroForm = styled.div`
-  background-color: white;
   @media (min-width: 768px) {
     border: 2px solid #66bfa6;
     border-radius: 10px;
     margin: 0 80px 40px;
-    padding-top: 20px;
   }
   @media (min-width: 1025px) {
     width: 100%;
@@ -156,7 +158,7 @@ const RetroForm = styled.div`
     flex-direction: column;
     justify-content: center;
   }
-`;
+`
 
 const HeaderTitle = styled.h2`
   font-size: 22px;
@@ -167,7 +169,7 @@ const HeaderTitle = styled.h2`
   @media (min-width: 1025px) {
     font-size: 30px;
   }
-`;
+`
 
 const Form = styled.form`
   display: flex;
@@ -180,18 +182,18 @@ const Form = styled.form`
   @media (min-width: 768px) {
     padding: 30px 25px;
   }
-`;
+`
 const ParticipantContainer = styled.div`
   margin: 10px 0;
   font-size: 20px;
-`;
+`
 const Input = styled.input`
   padding: 5px;
   border-radius: 5px;
   box-shadow: 0px 5px 6px #d3d3d3;
   border: 1px solid #66bfa6;
   width: 250px;
-`;
+`
 
 const SubmitButton = styled.button`
   width: 130px;
@@ -199,7 +201,7 @@ const SubmitButton = styled.button`
   padding: 5px;
   color: white;
   margin: 5px;
-  border-radius: 15px;
+  border-radius: 5px;
   border: none;
   align-self: center;
   background-color: #66bfa6;
@@ -214,7 +216,7 @@ const SubmitButton = styled.button`
     width: 150px;
     font-size: 20px;
   }
-`;
+`
 
 const Text = styled.p`
   font-size: 16px;
@@ -222,4 +224,4 @@ const Text = styled.p`
   @media (min-width: 768px) {
     font-size: 20px;
   }
-`;
+`

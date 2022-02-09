@@ -1,46 +1,59 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 // import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import retro from "../reducers/retro";
-import { RETRO_URL } from "../utils/constants";
+import { Link } from "react-router-dom"
+import moment from "moment"
+import retro from "../reducers/retro"
+import { RETRO_URL, DELETE_RETRO } from "../utils/constants"
+import swal from "sweetalert"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 const PreviousRetro = () => {
-  const [userRetro, setUserRetro] = useState([]);
+  const [userRetro, setUserRetro] = useState([])
+  const [retroId, setRetroId] = useState([])
   // const [status, setStatus] = useState("")
 
-  const userId = useSelector((store) => store.user.userId);
+  const userId = useSelector((store) => store.user.userId)
 
   useEffect(() => {
     fetch(RETRO_URL(`${userId._id}`))
       .then((res) => res.json())
-      .then((data) => setUserRetro(data.response));
-  }, [userId]);
+      .then((data) => (setUserRetro(data.response), setRetroId(data.response)))
+  }, [userId])
 
-  const inactiveFilter = userRetro.filter((item) => item.active === false);
+  console.log("USERRETRO", userRetro)
+  console.log("RETROID", retroId)
 
-  const findRetro = userRetro.filter((item) => item._id);
-  console.log("ID", findRetro);
+  const inactiveFilter = userRetro.filter((item) => item.active === false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const onButtonClick = (id) => {
-    dispatch(retro.actions.setRetroId(id));
-  };
+    dispatch(retro.actions.setRetroId(id))
+  }
 
-  // const retroId = useSelector((store) => store.retro.retroId);
-  // console.log("RETROID", retroId.id);
-
-  // const handleDelete = () => {
-  //   // DELETE request using fetch inside useEffect React hook
-  //   fetch(DELETE_RETRO(`${retroId}`, { method: "DELETE" })).then(() =>
-
-  //   )
-  //   // empty dependency array means this effect will only run once (like componentDidMount in classes)
-  // }
+  const onDeleteClick = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this retro!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        const options = {
+          method: "DELETE",
+        }
+        fetch(DELETE_RETRO(`${retroId.response._id}`), options)
+        swal("Poof! Your retro has been deleted!", {
+          icon: "success",
+        })
+      } else {
+        swal("Your retro is safe!")
+      }
+    })
+  }
 
   if (inactiveFilter.length > 0) {
     return (
@@ -49,7 +62,7 @@ const PreviousRetro = () => {
         <RetroContainer>
           {inactiveFilter.map((item) => (
             <RetroCard key={item._id}>
-              <button>x</button>
+              <button onClick={onDeleteClick}>x</button>
               <TextTitle>{item.description}</TextTitle>
               <Text>
                 Created on: {moment(item.createdAt).format("MMM Do YY")}
@@ -61,26 +74,26 @@ const PreviousRetro = () => {
           ))}
         </RetroContainer>
       </PreviousRetroContainer>
-    );
+    )
   }
   if (inactiveFilter < 1)
     return (
       <EmptyState>
         <TextTitle>You don't have any retro yet..</TextTitle>
         <Image
-          src="profileimage.png"
+          src="profileimage.svg"
           alt="Illustration of a person at a computer desk"
         />
       </EmptyState>
-    );
-};
+    )
+}
 
-export default PreviousRetro;
+export default PreviousRetro
 
 const PreviousRetroContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 const RetroCard = styled.div`
   width: 250px;
@@ -88,7 +101,6 @@ const RetroCard = styled.div`
   margin: 20px;
   border-radius: 15px;
   border: 1px solid #66bfa6;
-  background-color: white;
   box-shadow: 0px 5px 6px #d3d3d3;
   cursor: pointer;
   text-align: center;
@@ -98,19 +110,19 @@ const RetroCard = styled.div`
   @media (min-width: 1025px) {
     width: 300px;
   }
-`;
+`
 const RetroContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-`;
+`
 const Button = styled.button`
   width: 80px;
   font-size: 12px;
   padding: 5px;
   color: white;
   margin: 5px;
-  border-radius: 15px;
+  border-radius: 5px;
   border: none;
   background-color: #66bfa6;
   box-shadow: 0px 5px 6px #d3d3d3;
@@ -120,7 +132,7 @@ const Button = styled.button`
     width: 120px;
     font-size: 16px;
   }
-`;
+`
 const EmptyState = styled.div`
   display: flex;
   justify-contente: center;
@@ -128,7 +140,7 @@ const EmptyState = styled.div`
   flex-direction: column;
   margin-top: 50px;
   width: 100%;
-`;
+`
 
 const Image = styled.img`
   width: 250px;
@@ -142,7 +154,7 @@ const Image = styled.img`
   @media (min-width: 1025px) {
     display: none;
   }
-`;
+`
 const Text = styled.p`
   font-size: 12px;
   margin-bottom: 7px;
@@ -155,7 +167,7 @@ const Text = styled.p`
   @media (min-width: 1025px) {
     font-size: 20px;
   }
-`;
+`
 
 const TextTitle = styled.p`
   font-size: 18px;
@@ -170,7 +182,7 @@ const TextTitle = styled.p`
     font-size: 26px;
     margin-top: 100px;
   }
-`;
+`
 
 const Title = styled.div`
   text-align: center;
@@ -180,4 +192,4 @@ const Title = styled.div`
     font-size: 26px;
     margin-bottom: 30px;
   }
-`;
+`

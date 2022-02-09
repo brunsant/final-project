@@ -1,10 +1,10 @@
-import React from "react";
-import Header from "../components/Header";
-import { Link } from "react-router-dom";
-import GetThoughts from "../components/GetThoughts";
-import GetActionItems from "../components/GetActionItems";
+import React from "react"
+import Header from "../components/Header"
+import { Link } from "react-router-dom"
+import GetThoughts from "../components/GetThoughts"
+import GetActionItems from "../components/GetActionItems"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 const Summary = () => {
   return (
@@ -18,10 +18,10 @@ const Summary = () => {
         </SubmitButton>
       </SummaryContainer>
     </>
-  );
-};
+  )
+}
 
-export default Summary;
+export default Summary
 
 const SummaryContainer = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ const SummaryContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 10px 30px;
-`;
+`
 
 const SubmitButton = styled.button`
   width: 130px;
@@ -37,7 +37,7 @@ const SubmitButton = styled.button`
   padding: 5px;
   color: white;
   margin: 5px;
-  border-radius: 15px;
+  border-radius: 5px;
   border: none;
   align-self: center;
   background-color: #66bfa6;
@@ -52,4 +52,4 @@ const SubmitButton = styled.button`
     width: 150px;
     font-size: 20px;
   }
-`;
+`
