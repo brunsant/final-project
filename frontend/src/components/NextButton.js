@@ -1,5 +1,6 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,16 +8,15 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-} from "@chakra-ui/react"
+  Button,
+} from "@chakra-ui/react";
 
-import { Button } from "@chakra-ui/react"
-
-import styled from "styled-components"
+import styled from "styled-components";
 
 const NextButton = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const onClose = () => setIsOpen(false)
-  const cancelRef = React.useRef()
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
 
   return (
     <ChakraButton type="submit">
@@ -57,17 +57,16 @@ const NextButton = () => {
         </AlertDialogOverlay>
       </AlertDialog>
     </ChakraButton>
-  )
-}
+  );
+};
 
-export default NextButton
+export default NextButton;
 
-const ChakraButton = styled.button`
+const ChakraButton = styled.div`
   display: flex;
   justify-content: right;
   align-self: right;
   padding: 5px;
-  color: white;
   margin: 0 7% 0 0;
   cursor: pointer;
-`
+`;
