@@ -1,7 +1,8 @@
-import React from "react"
-import Header from "../components/Header"
+import React from "react";
 
-import styled from "styled-components"
+import Header from "../components/Header";
+
+import styled from "styled-components";
 
 const NotFound = () => {
   return (
@@ -18,22 +19,23 @@ const NotFound = () => {
         />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default NotFound
+export default NotFound;
 
 const Container = styled.div`
   display: flex;
   justify-contente: center;
   align-items: center;
   flex-direction: column;
-`
+`;
 
 const TextContainer = styled.div`
   text-align: center;
   margin-top: 30px;
   font-size: 20px;
+
   @media (min-width: 768px) {
     font-size: 32px;
     margin-bottom: 30px;
@@ -42,10 +44,11 @@ const TextContainer = styled.div`
   @media (min-width: 1025px) {
     font-size: 36px;
   }
-`
+`;
 const Image = styled.img`
   width: 300px;
   height: 300px;
+
   @media (min-width: 768px) {
     width: 450px;
     height: 450px;
@@ -55,4 +58,4 @@ const Image = styled.img`
     width: 550px;
     height: 550px;
   }
-`
+`;

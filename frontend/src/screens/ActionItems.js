@@ -1,8 +1,9 @@
-import React from "react"
-import Header from "../components/Header"
-import AddActionItems from "../components/AddActionItems"
-import GetActionItems from "../components/GetActionItems"
-import ThoughtsAccordion from "../components/ThoughtsAccordion"
+import React from "react";
+
+import Header from "../components/Header";
+import AddActionItems from "../components/AddActionItems";
+import ThoughtsAccordion from "../components/ThoughtsAccordion";
+
 import {
   Modal,
   ModalOverlay,
@@ -11,16 +12,15 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from "@chakra-ui/react"
-import { InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons"
-import { Button, ButtonGroup } from "@chakra-ui/react"
-import { useDisclosure } from "@chakra-ui/react"
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 
-import styled, { keyframes } from "styled-components"
+import styled, { keyframes } from "styled-components";
 
 const ActionItems = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Header />
@@ -43,10 +43,20 @@ const ActionItems = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Your team retro starts here!</ModalHeader>
+            <ModalHeader>It's time to create an Action Plan</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <p>Hello Bruna</p>
+              <p>
+                Review your team's thoughts - on the sidebar menu - and start an
+                open conversation. Then create an action plan to help your team
+                improve in the next sprint. You can add actions and who will be
+                responsible for them.
+              </p>
+              <p>
+                After creating the plan, the "Go to summary" button will close
+                the retro for further changes, but a summary will be saved on
+                every team member's profile page.
+              </p>
             </ModalBody>
 
             <ModalFooter>
@@ -57,19 +67,19 @@ const ActionItems = () => {
           </ModalContent>
         </Modal>
       </InfoButtonContainer>
+      {/* components import */}
       <ActionItemContainer>
         <ThoughtsAccordion />
         <ActionItemsWrapper>
-          <GetActionItems />
-
+          <HeaderTitle> ACTION PLAN </HeaderTitle>
           <AddActionItems />
         </ActionItemsWrapper>
       </ActionItemContainer>
     </>
-  )
-}
+  );
+};
 
-export default ActionItems
+export default ActionItems;
 
 const ActionItemContainer = styled.div`
   display: flex;
@@ -81,7 +91,7 @@ const ActionItemContainer = styled.div`
     flex-direction: row;
     margin: 10px 0px 10px 40px;
   }
-`
+`;
 
 const ActionItemsWrapper = styled.div`
   display: flex;
@@ -89,13 +99,18 @@ const ActionItemsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-`
+
+  @media (min-width: 1025px) {
+    border-left: 5px solid #011d45;
+    margin-left: 50px;
+  }
+`;
 const InfoButtonContainer = styled.div`
   display: flex;
   justify-content: right;
   align-items: right;
-  margin: 10px 10px 0 0;
-`
+  margin: 20px 10px 0 0;
+`;
 
 const pulse = keyframes`
   0%,10% {
@@ -110,7 +125,7 @@ const pulse = keyframes`
     opacity: 0;
     transform: scale(1);
   }
-`
+`;
 
 const Scale = keyframes`
   0% {
@@ -122,22 +137,34 @@ const Scale = keyframes`
   100% {
     transform: scale(1);
   }
-`
+`;
 
 const ButtonContainer = styled.div`
   animation: ${({ layer }) => (layer ? pulse : Scale)} 1.5s;
   animation-iteration-count: 5;
   margin-right: 10px;
+
   @media (min-width: 1025px) {
     display: none;
   }
-`
+`;
 const ButtonContainerBig = styled.div`
   display: none;
+
   @media (min-width: 1025px) {
     display: block;
     animation: ${({ layer }) => (layer ? pulse : Scale)} 1.5s;
     animation-iteration-count: 5;
     margin-right: 50px;
   }
-`
+`;
+
+const HeaderTitle = styled.h2`
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+
+  @media (min-width: 768px) {
+    font-size: 28px;
+  }
+`;

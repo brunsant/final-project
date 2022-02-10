@@ -1,23 +1,23 @@
-import React, { useState } from "react"
-import { THOUGHT_URL } from "../utils/constants"
-import { useSelector } from "react-redux"
-import { Select } from "@chakra-ui/react"
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-import styled from "styled-components"
+import { THOUGHT_URL } from "../utils/constants";
+
+import { Select } from "@chakra-ui/react";
+import styled from "styled-components";
 
 const AddThoughts = () => {
-  const [newThought, setNewThought] = useState("")
-  const [category, setCategory] = useState("")
+  const [newThought, setNewThought] = useState("");
+  const [category, setCategory] = useState("");
 
-  const retroId = useSelector((store) => store.retro)
-  // console.log("RETRO ID Thought", retroId)
+  const retroId = useSelector((store) => store.retro);
 
   const RefreshButton = () => {
-    window.location.reload("Refresh")
-  }
+    window.location.reload("Refresh");
+  };
 
   const handleFormSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const options = {
       method: "POST",
@@ -29,12 +29,12 @@ const AddThoughts = () => {
         retro: retroId._id,
         category,
       }),
-    }
+    };
     fetch(THOUGHT_URL(`${retroId._id}`), options)
       .then((res) => res.json())
       .then((data) => setNewThought(data))
-      .finally(() => setNewThought(""))
-  }
+      .finally(() => setNewThought(""));
+  };
 
   return (
     <>
@@ -46,7 +46,6 @@ const AddThoughts = () => {
             onChange={(e) => setCategory(e.target.value)}
             size="md"
           >
-            {/* <option value="">Select category</option> */}
             <option value="Add">Add</option>
             <option value="Drop">Drop</option>
             <option value="Keep">Keep</option>
@@ -67,10 +66,10 @@ const AddThoughts = () => {
         </form>
       </AddThoughtsContainer>
     </>
-  )
-}
+  );
+};
 
-export default AddThoughts
+export default AddThoughts;
 
 const AddThoughtsContainer = styled.div`
   display: flex;
@@ -81,10 +80,11 @@ const AddThoughtsContainer = styled.div`
   @media (min-width: 768px) {
     margin: 5% 20%;
   }
+
   @media (min-width: 1025px) {
     margin: 5% 30%;
   }
-`
+`;
 
 const Input = styled.input`
   border-radius: 5px;
@@ -94,13 +94,14 @@ const Input = styled.input`
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
+  padding-left: 10px;
   width: 100%;
-`
+`;
 
 const InputContainer = styled.div`
   display: flex;
   margin: 20px 0 0 0;
-`
+`;
 
 const SubmitButton = styled.button`
   width: 100px;
@@ -118,13 +119,15 @@ const SubmitButton = styled.button`
   box-shadow: 0px 5px 6px #d3d3d3;
   transition: all 0.3s ease 0s;
   cursor: pointer;
+
   @media (min-width: 768px) {
     width: 120px;
     font-size: 16px;
   }
+
   @media (min-width: 1025px) {
     width: 150px;
     font-size: 20px;
     margin: 0;
   }
-`
+`;

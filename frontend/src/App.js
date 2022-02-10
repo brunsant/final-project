@@ -9,6 +9,7 @@ import Signin from "./screens/Signin";
 import Signup from "./screens/Signup";
 import NotFound from "./screens/NotFound";
 import ProfilePage from "./screens/ProfilePage";
+import AboutUs from "./screens/AboutUs";
 import Thoughts from "./screens/Thoughts";
 import ActionItems from "./screens/ActionItems";
 import Summary from "./screens/Summary";
@@ -22,8 +23,6 @@ const reducer = combineReducers({
   user: user.reducer,
   retro: retro.reducer,
 });
-
-// const store = configureStore({ reducer })
 
 // -- add local storage
 
@@ -55,6 +54,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
               <Route path="/" element={<Main />} />
+              <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/profilepage" element={<ProfilePage />} />
               <Route path="/thoughts" element={<Thoughts />} />
               <Route path="/actionitems" element={<ActionItems />} />
@@ -77,4 +77,5 @@ const StylingDiv = styled.div`
   background-size: cover;
   min-height: 100vh;
   width: 100%;
+  font-family: "Roboto", sans-serif;
 `;

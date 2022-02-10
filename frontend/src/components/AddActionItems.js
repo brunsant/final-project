@@ -1,7 +1,11 @@
-import React, { useState } from "react"
-import { ACTION_PLAN_URL, ACTIVE_URL } from "../utils/constants"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import GetActionItems from "./GetActionItems";
+
+import { ACTION_PLAN_URL, ACTIVE_URL } from "../utils/constants";
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -9,25 +13,23 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-} from "@chakra-ui/react"
-import { Button } from "@chakra-ui/react"
-
-import styled from "styled-components"
+  Button,
+} from "@chakra-ui/react";
+import styled from "styled-components";
 
 const AddActionItems = () => {
-  const [newAction, setNewAction] = useState("")
-  const [name, setName] = useState("")
+  const [newAction, setNewAction] = useState("");
+  const [name, setName] = useState("");
 
-  const [isOpen, setIsOpen] = React.useState(false)
-  const onClose = () => setIsOpen(false)
-  const cancelRef = React.useRef()
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef();
 
-  const retroId = useSelector((store) => store.retro)
-  // console.log("RETRO ID Thought", retroId)
+  const retroId = useSelector((store) => store.retro);
 
   //Patch to send the retro to inactive
   const handleActiveRetro = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const options = {
       method: "PATCH",
@@ -37,18 +39,18 @@ const AddActionItems = () => {
       body: JSON.stringify({
         active: false,
       }),
-    }
+    };
     fetch(ACTIVE_URL(`${retroId._id}`), options)
       .then((res) => res.json())
-      .then((data) => data)
-  }
+      .then((data) => data);
+  };
 
   const RefreshButton = () => {
-    window.location.reload("Refresh")
-  }
+    window.location.reload("Refresh");
+  };
 
   const handleFormSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const options = {
       method: "POST",
@@ -60,37 +62,41 @@ const AddActionItems = () => {
         name,
         retro: retroId._id,
       }),
-    }
+    };
     fetch(ACTION_PLAN_URL(`${retroId._id}`), options)
       .then((res) => res.json())
       .then((data) => setNewAction(data))
-      .finally(() => setNewAction(""), setName(""))
-  }
+      .finally(() => setNewAction(""), setName(""));
+  };
   return (
     <AddActionItemContainer>
       <form onSubmit={handleFormSubmit}>
-        <InputContainer>
-          <Input
-            required
-            type="text"
-            value={newAction}
-            onChange={(e) => setNewAction(e.target.value)}
-            placeholder="Add your action here!"
-          ></Input>
-          <PostContainer>
+        <ItemContainer>
+          <GetActionItems />
+          <InputContainer>
             <Input
               required
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Add the reponsable here!"
-            ></Input>{" "}
-            <SubmitButton onClick={RefreshButton} type="submit">
-              Post
-            </SubmitButton>
-          </PostContainer>
-        </InputContainer>
+              value={newAction}
+              onChange={(e) => setNewAction(e.target.value)}
+              placeholder="Add your action here"
+            ></Input>
+            <PostContainer>
+              <Input
+                required
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Add the reponsible here"
+              ></Input>
+            </PostContainer>
+          </InputContainer>
+        </ItemContainer>
         <ButtonContainer>
+          <SubmitButton onClick={RefreshButton} type="submit">
+            Post
+          </SubmitButton>
+          {/* Chakra Go to Summary button */}
           <ChakraButton onClick={handleActiveRetro} type="submit">
             <Button
               colorScheme="orange"
@@ -134,84 +140,90 @@ const AddActionItems = () => {
         </ButtonContainer>
       </form>
     </AddActionItemContainer>
-  )
-}
+  );
+};
 
-export default AddActionItems
+export default AddActionItems;
+
+const ItemContainer = styled.div`
+  width: 100%;
+  align-self: center;
+
+  @media (min-width: 1025px) {
+    width: 70%;
+    align-self: left;
+  }
+`;
 
 const PostContainer = styled.div`
   display: flex;
-  width: 80%;
-`
+  width: 100%;
+`;
 
 const AddActionItemContainer = styled.div`
   width: 80%;
-
-  @media (min-width: 1025px) {
-    border-left: 5px solid black;
-    padding-left: 30px;
-  }
-`
+`;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   @media (min-width: 1025px) {
     margin-top: 40px;
+    width: 97%;
   }
-`
+`;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 30px 0;
-`
+`;
 
 const SubmitButton = styled.button`
   width: 130px;
-  font-size: 16px;
-  padding: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 6px;
   color: white;
   margin: 0px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 0px;
-  border-top-left-radius: 0px;
+  border-radius: 5px;
 
   border: none;
   align-self: center;
   background-color: #66bfa6;
   box-shadow: 0px 5px 6px #d3d3d3;
   cursor: pointer;
+
   @media (min-width: 768px) {
     width: 120px;
     font-size: 16px;
   }
+
   @media (min-width: 1025px) {
     width: 150px;
     font-size: 20px;
+    padding: 5px;
   }
-`
+`;
 
-const ChakraButton = styled.button`
-  width: 130px;
-  font-size: 16px;
-  padding: 5px;
-  color: white;
+const ChakraButton = styled.div`
   margin: 5px;
   align-self: center;
   cursor: pointer;
+
   @media (min-width: 768px) {
     width: 120px;
     font-size: 16px;
   }
+
   @media (min-width: 1025px) {
     width: 150px;
     font-size: 20px;
   }
-`
+`;
 
 const Input = styled.input`
   margin: 10px 0 10px;
@@ -219,9 +231,6 @@ const Input = styled.input`
   border-radius: 5px;
   box-shadow: 0px 5px 6px #d3d3d3;
   border: 1px solid #66bfa6;
-  width: 80%;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
-`
+  width: 100%;
+  border-radius: 5px;
+`;

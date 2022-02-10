@@ -32,24 +32,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: () => crypto.randomBytes(128).toString("hex"),
   },
-  // role: {
-  //   // type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Role",
-  //   type: String,
-  //   enum: ["Admin", "Participant"],
-  // },
 });
 
 const User = mongoose.model("User", UserSchema);
 
-// Role model
-// const RoleSchema = mongoose.Schema({
-//   description: String,
-// })
-
-// const Role = mongoose.model("Role", RoleSchema)
-
-// Retro model - initiate retro + add participants (patch request)
 const RetroSchema = mongoose.Schema({
   description: String,
   admin: {
@@ -138,27 +124,12 @@ app.get("/endpoints", (req, res) => {
   });
 });
 
-// POST  Requests
-// Role
-// app.post("/role", async (req, res) => {
-//   const { description } = req.body
-//   try {
-//     const newRole = await new Role({ description }).save()
-//     res.status(201).json({ response: newRole, success: true })
-//   } catch (error) {
-//     res.status(400).json({
-//       response: error,
-//       success: false,
-//     })
-//   }
-// })
 // User
 app.post("/signup", async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
     const salt = bcrypt.genSaltSync();
-    // const queriedRole = await Role.findById(role)
     const newUser = await new User({
       username: username.toLowerCase(),
       password: bcrypt.hashSync(password, salt),
@@ -266,28 +237,6 @@ app.post("/retros/:retro/actionitems", async (req, res) => {
   }
 });
 
-// PATCH Request
-// Participants
-// app.patch("/retros/:retro/participants", async (req, res) => {
-//   const { participants } = req.body
-//   const { retro } = req.params
-
-//   try {
-//     const queriedParticipants = await User.findById(participants)
-//     const updatedRetro = await Retro.findByIdAndUpdate(retro, {
-//       $addToSet: {
-//         participants: queriedParticipants,
-//       },
-//     })
-//     if (updatedRetro) {
-//       res.status(201).json({ response: updatedRetro, success: true })
-//     } else {
-//       res.status(404).json({ response: "retro not found", succes: false })
-//     }
-//   } catch (error) {
-//     res.status(400).json({ response: error, success: false })
-//   }
-// })
 // Retro
 app.patch("/retros/:retroId", async (req, res) => {
   const { retroId } = req.params;

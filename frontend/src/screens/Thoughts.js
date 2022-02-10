@@ -1,8 +1,10 @@
-import React from "react"
-import Header from "../components/Header"
-import AddThoughts from "../components/AddThoughts"
-import GetThoughts from "../components/GetThoughts"
-import NextButton from "../components/NextButton"
+import React from "react";
+
+import Header from "../components/Header";
+import AddThoughts from "../components/AddThoughts";
+import GetThoughts from "../components/GetThoughts";
+import NextButton from "../components/NextButton";
+
 import {
   Modal,
   ModalOverlay,
@@ -11,16 +13,15 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from "@chakra-ui/react"
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 
-import { InfoIcon } from "@chakra-ui/icons"
-import { Button } from "@chakra-ui/react"
-import { useDisclosure } from "@chakra-ui/react"
-
-import styled, { keyframes } from "styled-components"
+import styled, { keyframes } from "styled-components";
 
 const Thoughts = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -45,10 +46,18 @@ const Thoughts = () => {
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Your team retro starts here!</ModalHeader>
+              <ModalHeader>This is the Thoughts area</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <p>Hello Bruna</p>
+                <p>
+                  Reflect about your experience during this sprint. Add your
+                  thoughts and comments, specifiying which category they are a
+                  part of.
+                </p>
+                <p>
+                  All answers are anonymous, but keep in mind to be thoughtful
+                  and polite to your team members.
+                </p>
               </ModalBody>
 
               <ModalFooter>
@@ -59,6 +68,7 @@ const Thoughts = () => {
             </ModalContent>
           </Modal>
         </InfoButtonContainer>
+        {/* components import  */}
         <GetThoughts />
         <AddThoughts />
         <ButtonContain>
@@ -66,10 +76,10 @@ const Thoughts = () => {
         </ButtonContain>
       </ThoughtsContainer>
     </>
-  )
-}
+  );
+};
 
-export default Thoughts
+export default Thoughts;
 
 const ButtonContain = styled.div`
   display: flex;
@@ -79,19 +89,19 @@ const ButtonContain = styled.div`
     justify-content: end;
     margin: 0 5% 5% 0;
   }
-`
+`;
 
 const ThoughtsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0px 20px;
-`
+`;
 const InfoButtonContainer = styled.div`
   display: flex;
   justify-content: right;
   align-items: right;
-  margin-top: 10px;
-`
+  margin-top: 20px;
+`;
 
 const pulse = keyframes`
   0%,10% {
@@ -106,7 +116,7 @@ const pulse = keyframes`
     opacity: 0;
     transform: scale(1);
   }
-`
+`;
 
 const Scale = keyframes`
   0% {
@@ -118,22 +128,24 @@ const Scale = keyframes`
   100% {
     transform: scale(1);
   }
-`
+`;
 
 const ButtonContainer = styled.div`
   animation: ${({ layer }) => (layer ? pulse : Scale)} 1.5s;
   animation-iteration-count: 5;
   margin: 5px 0 0;
+
   @media (min-width: 1025px) {
     display: none;
   }
-`
+`;
 const ButtonContainerBig = styled.div`
   display: none;
+
   @media (min-width: 1025px) {
     display: block;
     animation: ${({ layer }) => (layer ? pulse : Scale)} 1.5s;
     animation-iteration-count: 5;
     margin-right: 50px;
   }
-`
+`;
