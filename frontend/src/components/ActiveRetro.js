@@ -16,10 +16,12 @@ const ActiveRetro = () => {
   console.log("USER ID ACTIVE RETRO", userId);
 
   useEffect(() => {
-    fetch(RETRO_URL(`${userId}/retros`))
+    fetch(RETRO_URL(`${userId}`))
       .then((res) => res.json())
       .then((data) => setUserRetro(data.response));
   }, [userId]);
+
+  console.log("USER RETRO", userRetro);
 
   const dispatch = useDispatch();
   const onButtonClick = (id) => {

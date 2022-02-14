@@ -4,7 +4,7 @@ const BASE_URL = "https://retro-app-bruna-emelie.herokuapp.com";
 export const API_URL = (id) => `${BASE_URL}/${id}`;
 
 // GET request to get retros by user
-export const RETRO_URL = (id) => `${BASE_URL}/users/${id}`;
+export const RETRO_URL = (id) => `${BASE_URL}/users/${id}/retros`;
 
 // POST/GET request to post thoughts by retro
 export const THOUGHT_URL = (id) => `${BASE_URL}/retros/${id}/thoughts`;
