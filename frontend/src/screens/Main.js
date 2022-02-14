@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Header from "../components/Header";
 import ActiveRetro from "../components/ActiveRetro";
@@ -21,6 +23,16 @@ import styled, { keyframes } from "styled-components";
 
 export const Main = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const accessToken = useSelector((store) => store.user.accessToken);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/signin");
+    }
+  }, [accessToken, navigate]);
+
   return (
     <>
       <Header />

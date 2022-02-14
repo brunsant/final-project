@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 const ProfilePage = () => {
   const userId = useSelector((store) => store.user.username);
+  console.log("USER ID PROFILE PAGE", userId);
 
   const nameCapitalized = userId.charAt(0).toUpperCase() + userId.slice(1);
 
