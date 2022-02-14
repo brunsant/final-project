@@ -18,7 +18,7 @@ const PreviousRetro = () => {
   console.log("USER ID PREVIOUS RETRO", userId);
 
   useEffect(() => {
-    fetch(RETRO_URL(`${userId._id}`))
+    fetch(RETRO_URL(`${userId._id}/retros`))
       .then((res) => res.json())
       // eslint-disable-next-line no-sequences
       .then((data) => (setUserRetro(data.response), setRetroId(data.response)));
