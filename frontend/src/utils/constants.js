@@ -1,10 +1,10 @@
 const BASE_URL = "https://retro-app-bruna-emelie.herokuapp.com";
 
 // to post/create a new retro to the api backend
-export const API_URL = (slug) => `${BASE_URL}/${slug}`;
+export const API_URL = (id) => `${BASE_URL}/${id}`;
 
 // GET request to get retros by user
-export const RETRO_URL = (id) => `${BASE_URL}/users/${id}/retros`;
+export const RETRO_URL = (id) => `${BASE_URL}/users/${id}`;
 
 // POST/GET request to post thoughts by retro
 export const THOUGHT_URL = (id) => `${BASE_URL}/retros/${id}/thoughts`;
