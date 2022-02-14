@@ -14,7 +14,7 @@ export const AddRetro = () => {
   const [participants, setParticipants] = useState([]);
   const [userList, setUserList] = useState("");
 
-  const userId = useSelector((store) => store.user.userId._id);
+  const userId = useSelector((store) => store.user.userId);
 
   const RefreshButton = () => {
     window.location.reload("Refresh");
