@@ -126,14 +126,13 @@ app.get("/endpoints", (req, res) => {
 
 // User
 app.post("/signup", async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password } = req.body;
 
   try {
     const salt = bcrypt.genSaltSync();
     const newUser = await new User({
       username: username.toLowerCase(),
       password: bcrypt.hashSync(password, salt),
-      role,
     }).save();
 
     if (password.length < 5) {
@@ -145,7 +144,6 @@ app.post("/signup", async (req, res) => {
         userId: newUser._id,
         username: newUser.username,
         accessToken: newUser.accessToken,
-        role: newUser.role,
       },
       success: true,
     });
@@ -163,7 +161,7 @@ app.post("/signin", async (req, res) => {
     if (user && bcrypt.compareSync(password, user.password)) {
       res.status(200).json({
         response: {
-          userId: user,
+          userId: user._id,
           username: user.username,
           accessToken: user.accessToken,
         },
