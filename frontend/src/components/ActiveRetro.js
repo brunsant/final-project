@@ -13,9 +13,10 @@ const ActiveRetro = () => {
   const [userRetro, setUserRetro] = useState([]);
 
   const userId = useSelector((store) => store.user.userId);
+  console.log("USER ID ACTIVE RETRO", userId);
 
   useEffect(() => {
-    fetch(RETRO_URL(`${userId._id}`))
+    fetch(RETRO_URL(`${userId}`))
       .then((res) => res.json())
       .then((data) => setUserRetro(data.response));
   }, [userId]);

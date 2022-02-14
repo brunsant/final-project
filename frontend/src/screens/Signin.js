@@ -11,7 +11,7 @@ import styled from "styled-components";
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState("signup");
+  const [mode, setMode] = useState("signin");
   const [error, setError] = useState("");
   const accessToken = useSelector((store) => store.user.accessToken);
 
