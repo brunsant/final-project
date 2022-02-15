@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 
-import { THOUGHT_URL } from "../utils/constants";
+import { THOUGHT_URL } from "../utils/constants"
 
 import {
   Accordion,
@@ -10,30 +10,30 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 const GetThoughts = () => {
-  const [retroThoughts, setRetroThoughts] = useState([]);
+  const [retroThoughts, setRetroThoughts] = useState([])
 
-  const retroId = useSelector((store) => store.retro._id);
+  const retroId = useSelector((store) => store.retro._id)
 
   useEffect(() => {
-    fetchThoughts();
+    fetchThoughts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retroId]);
+  }, [retroId])
 
   const fetchThoughts = () => {
     fetch(THOUGHT_URL(`${retroId}`))
       .then((res) => res.json())
-      .then((data) => setRetroThoughts(data));
-  };
+      .then((data) => setRetroThoughts(data))
+  }
 
-  const add = retroThoughts.filter((item) => item.category === "Add");
-  const drop = retroThoughts.filter((item) => item.category === "Drop");
-  const keep = retroThoughts.filter((item) => item.category === "Keep");
-  const improve = retroThoughts.filter((item) => item.category === "Improve");
+  const add = retroThoughts.filter((item) => item.category === "Add")
+  const drop = retroThoughts.filter((item) => item.category === "Drop")
+  const keep = retroThoughts.filter((item) => item.category === "Keep")
+  const improve = retroThoughts.filter((item) => item.category === "Improve")
 
   return (
     <ThoughtsAccordion>
@@ -101,10 +101,10 @@ const GetThoughts = () => {
         </AccordionItem>
       </Accordion>
     </ThoughtsAccordion>
-  );
-};
+  )
+}
 
-export default GetThoughts;
+export default GetThoughts
 
 const ThoughtsAccordion = styled.div`
   margin: 10px 30px 20px;
@@ -113,9 +113,9 @@ const ThoughtsAccordion = styled.div`
     width: 80%;
     margin: 10px 0px 0 0;
     justify-self: center;
-    background-color: ;
+    background-color: white;
   }
-`;
+`
 
 const HeaderTitle = styled.h2`
   font-size: 20px;
@@ -125,4 +125,4 @@ const HeaderTitle = styled.h2`
   @media (min-width: 768px) {
     font-size: 28px;
   }
-`;
+`
