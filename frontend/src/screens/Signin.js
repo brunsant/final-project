@@ -149,6 +149,7 @@ const HeaderTitle = styled.h1`
 
   @media (min-width: 768px) {
     font-size: 42px;
+    font-weight: 100;
   }
 `;
 

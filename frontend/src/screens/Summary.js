@@ -12,8 +12,9 @@ const Summary = () => {
     <>
       <Header />
       <SummaryContainer>
-        <GetSummaryThoughts />
         <GetSummaryAction />
+        <GetSummaryThoughts />
+
         <SubmitButton>
           <Link to="/"> Back to main </Link>
         </SubmitButton>

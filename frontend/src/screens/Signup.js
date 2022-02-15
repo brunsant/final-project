@@ -146,6 +146,7 @@ const HeaderTitle = styled.h1`
   font-size: 32px;
   padding: 0 20px;
   color: white;
+  font-weight: 100;
 
   @media (min-width: 768px) {
     font-size: 42px;

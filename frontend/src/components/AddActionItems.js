@@ -1,29 +1,16 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import GetActionItems from "./GetActionItems";
+import NextButton from "./NextButton";
 
 import { ACTION_PLAN_URL, ACTIVE_URL } from "../utils/constants";
 
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
 import styled from "styled-components";
 
 const AddActionItems = () => {
   const [newAction, setNewAction] = useState("");
   const [name, setName] = useState("");
-
-  const [isOpen, setIsOpen] = React.useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = React.useRef();
 
   const retroId = useSelector((store) => store.retro);
 
@@ -98,44 +85,12 @@ const AddActionItems = () => {
           </SubmitButton>
           {/* Chakra Go to Summary button */}
           <ChakraButton onClick={handleActiveRetro} type="submit">
-            <Button
-              colorScheme="orange"
-              variant="solid"
-              color={"white"}
-              onClick={() => setIsOpen(true)}
-            >
-              Go to Summary
-            </Button>
-
-            <AlertDialog
-              isOpen={isOpen}
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
-            >
-              <AlertDialogOverlay>
-                <AlertDialogContent>
-                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Go to Summary
-                  </AlertDialogHeader>
-
-                  <AlertDialogBody>
-                    Are you sure? Your retro will be closed after this.
-                  </AlertDialogBody>
-                  <AlertDialogBody>
-                    You can still find the summary on your profile page.
-                  </AlertDialogBody>
-
-                  <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose}>
-                      Cancel
-                    </Button>
-                    <Button colorScheme="orange" onClick={onClose} ml={3}>
-                      <Link to="/summary">Go to Summary</Link>
-                    </Button>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialogOverlay>
-            </AlertDialog>
+            <NextButton
+              buttonText="Go to Summary"
+              confirmationText="Are you sure? Your retro will be closed after this"
+              dialogText="You can still find the summary on your profile page."
+              linkNextPage="/summary"
+            />
           </ChakraButton>
         </ButtonContainer>
       </form>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch, batch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { API_URL } from "../utils/constants";
 
@@ -41,21 +41,9 @@ export const AddRetro = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          batch(() => {
-            dispatch(retro.actions.setRetroId(data.response._id));
-            dispatch(retro.actions.setDescription(data.response.description));
-            dispatch(retro.actions.setAdmin(data.response.admin));
-            dispatch(retro.actions.setParticipants(data.response.participants));
-            dispatch(retro.actions.setActive(true));
-            dispatch(retro.actions.setError());
-          });
+          dispatch(retro.actions.setRetroId(data.response._id));
         } else {
-          batch(() => {
-            dispatch(retro.actions.setDescription(null));
-            dispatch(retro.actions.setAdmin(null));
-            dispatch(retro.actions.setParticipants(null));
-            dispatch(retro.actions.setError());
-          });
+          dispatch(retro.actions.setRetroId(null));
         }
       });
     swal({
@@ -143,7 +131,7 @@ export default AddRetro;
 const RetroForm = styled.div`
   @media (min-width: 768px) {
     border: 2px solid #66bfa6;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 0 80px 40px;
   }
 
@@ -152,9 +140,9 @@ const RetroForm = styled.div`
     max-width: 600px;
     min-height: 550px;
     margin: 0;
-    border-top-left-radius: 10px;
+    border-top-left-radius: 5px;
     border-bottom-right-radius: 0;
-    border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 5px;
     border-top-right-radius: 0;
     display: flex;
     flex-direction: column;
@@ -181,7 +169,7 @@ const Form = styled.form`
   justify-content: center;
   align-items: center;
   padding: 15px 10px;
-  border-radius: 10px;
+  border-radius: 5px;
 
   @media (min-width: 768px) {
     padding: 30px 25px;

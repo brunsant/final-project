@@ -76,9 +76,9 @@ const ActiveRetroContainer = styled.div`
     margin: 0;
     border: 2px solid #66bfa6;
     border-top-left-radius: 0;
-    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 5px;
     border-bottom-left-radius: 0;
-    border-top-right-radius: 10px;
+    border-top-right-radius: 5px;
     border-left: none;
     display: flex;
     flex-direction: column;

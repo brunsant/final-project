@@ -92,8 +92,8 @@ const Input = styled.input`
   border: 1px solid #66bfa6;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
   padding-left: 10px;
   width: 100%;
 `;
@@ -109,15 +109,14 @@ const SubmitButton = styled.button`
   border: 1px solid #66bfa6;
   padding: 5px 0;
   color: white;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
   border-bottom-left-radius: 0px;
   border-top-left-radius: 0px;
   border: none;
   align-self: center;
   background-color: #66bfa6;
   box-shadow: 0px 5px 6px #d3d3d3;
-  transition: all 0.3s ease 0s;
   cursor: pointer;
 
   @media (min-width: 768px) {

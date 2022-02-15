@@ -13,7 +13,12 @@ import {
 
 import styled from "styled-components";
 
-const NextButton = () => {
+const NextButton = ({
+  buttonText,
+  confirmationText,
+  dialogText,
+  linkNextPage,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
@@ -26,7 +31,7 @@ const NextButton = () => {
         color={"white"}
         onClick={() => setIsOpen(true)}
       >
-        Go to next
+        {buttonText}
       </Button>
 
       <AlertDialog
@@ -37,20 +42,18 @@ const NextButton = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Go to next
+              {buttonText}
             </AlertDialogHeader>
 
-            <AlertDialogBody>Are you sure?</AlertDialogBody>
-            <AlertDialogBody>
-              Check if your team is ready to procced.
-            </AlertDialogBody>
+            <AlertDialogBody>{confirmationText}</AlertDialogBody>
+            <AlertDialogBody>{dialogText}</AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
               <Button colorScheme="orange" onClick={onClose} ml={3}>
-                <Link to="/actionitems">Go to next</Link>
+                <Link to={linkNextPage}>{buttonText}</Link>
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
